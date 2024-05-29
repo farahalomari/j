@@ -117,3 +117,25 @@ SELECT "busNetwork".calculate_buckets_for_route('53IN')
 --select table bucketInfo
 SELECT * FROM "busNetwork"."bucketInfo"
 ORDER BY "routeID";
+
+--populate tables
+SELECT "busNetwork".calculate_buckets_for_route('40IN');
+SELECT "busNetwork".calculate_buckets_for_route('40OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('50IN');
+SELECT "busNetwork".calculate_buckets_for_route('50OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('53IN');
+SELECT "busNetwork".calculate_buckets_for_route('53OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('54IN');
+SELECT "busNetwork".calculate_buckets_for_route('54OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('55IN');
+SELECT "busNetwork".calculate_buckets_for_route('55OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('59IN');
+SELECT "busNetwork".calculate_buckets_for_route('59OUT');
+
+SELECT "busNetwork".calculate_buckets_for_route('60IN');
+SELECT "busNetwork".calculate_buckets_for_route('60OUT');
