@@ -148,6 +148,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       TextFormField(
                         controller: _phoneController,
                         style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           border: const UnderlineInputBorder(),
                           labelText: 'Enter your phone number',
@@ -171,28 +172,28 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 16),
                       // Password Field
                       TextFormField(
-                        controller: _passController,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'Enter your password',
+                          controller: _passController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'Enter your password',
                           labelStyle: const TextStyle(color: Colors.black),
-                          errorText: _passErrorText,
+                            errorText: _passErrorText,
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
+                            ),
+                            enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
+                            ),
                           ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
-                          }
-                          // Add more validation logic if needed
-                          return null;
-                        },
-                        obscureText: true, // Hides the password input
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            // Add more validation logic if needed
+                            return null;
+                          },
+                          obscureText: true, // Hides the password input
                       ),
                       const SizedBox(height: 16),
                       // Confirm Password Field
@@ -259,75 +260,28 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: const Text('Sign up'),
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 10),
+                            const Padding(
+                              padding: EdgeInsets.only(top: 10),
                         child: Text("Already have an account?",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 color: Colors.black)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
                                   builder: (context) => const LoginScreen()));
-                        },
-                        child: const TextSection(
+                              },
+                              child: const TextSection(
                           description: "Log-in !",
                         ),
                       ),
                     ],
                   )),
                 ),
-              ),
-            ),
-          ],
-        ),
-        bottomNavigationBar: NavigationBar(
-          labelBehavior: labelBehavior,
-          selectedIndex: currentPageIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          destinations: <Widget>[
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-            ),
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.route),
-                label: 'Routes',
-              ),
-            ),
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Profile',
               ),
             ),
           ],
