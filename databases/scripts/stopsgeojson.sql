@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS "busNetwork".stopsgeojson
     geom geometry(Point,4326),
     "stopID" character varying COLLATE pg_catalog."default",
     "stopName" character varying COLLATE pg_catalog."default",
-    CONSTRAINT stopsgeojson_pkey PRIMARY KEY (id)
-)
+    CONSTRAINT stopsgeojson_pkey PRIMARY KEY (id),
+    CONSTRAINT stops_unique UNIQUE ("stopID")
+);
