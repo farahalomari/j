@@ -6,22 +6,24 @@ import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:convert';
 import 'package:geojson/geojson.dart';
+import 'js_util.dart';
+//import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 
 void main() {
-  runApp(MapScreen());
+  runApp(const MapScreen());
 }
-
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
   @override
-  _MapScreenState createState() => _MapScreenState();
+  MapScreenState createState() => MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
   List<LatLng> routeCoordinates = [];
   List<Marker> stopMarkers = [];
-
 
   @override
   void initState() {
@@ -30,23 +32,23 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> loadGeoJsonData() async {
-    final String geoJsonString = await rootBundle.loadString('assets/routes.geojson');
+    final String geoJsonString =
+        await rootBundle.loadString('assets/map/map.geojson');
     final GeoJson geoJson = GeoJson();
+
     geoJson.processedLines.listen((GeoJsonLine line) {
-      setState(() {
-        routeCoordinates.addAll(line.geoSerie?.toLatLng() as Iterable<LatLng>);
-      });
+      final List<LatLng> coordinates =
+          line.geoSerie?.toLatLng() as List<LatLng>;
+      addPolyline(coordinates); // Add polyline to Google Map
     });
+
     geoJson.processedPoints.listen((GeoJsonPoint point) {
-      setState(() {
-        stopMarkers.add(
-          Marker(
-            point: LatLng(point.geoPoint.latitude, point.geoPoint.longitude),
-            builder: (ctx) => Icon(Icons.location_on, color: Colors.red),
-          ),
-        );
-      });
+      final LatLng position =
+          LatLng(point.geoPoint.latitude, point.geoPoint.longitude);
+      addMarker(
+          position.latitude, position.longitude); // Add marker to Google Map
     });
+
     geoJson.endSignal.listen((bool _) => geoJson.dispose());
     geoJson.parse(geoJsonString, verbose: true);
   }
@@ -54,7 +56,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map')),
+      appBar: AppBar(title: const Text('Map')),
       body: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
@@ -62,12 +64,20 @@ class _MapScreenState extends State<MapScreen> {
           zoom: 13.0,
         ),
         children: [
-        TileLayer(
-            urlTemplate:
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c'],
-
-        ),
+          TileLayer(
+            urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            subdomains: const ['a', 'b', 'c'],
+          ),
+          PolylineLayer(
+            polylines: [
+              Polyline(
+                points: routeCoordinates,
+                color: Colors.blue, // Customize polyline color
+                strokeWidth: 4, // Customize polyline width
+              ),
+            ],
+          ),
+          MarkerLayer(markers: stopMarkers),
         ],
       ),
     );

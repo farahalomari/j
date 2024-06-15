@@ -5,25 +5,26 @@ import 'package:gradproj7/otp.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:flutter/gestures.dart';
 
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sign Up',
       theme: ThemeData(
         primarySwatch: Colors.purple,
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.purple),
           ),
         ),
       ),
-      home: SignupScreen(),
+      home: const SignupScreen(),
     );
   }
 }
@@ -136,7 +137,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 223, 218, 230),
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
             const TitleSection(
@@ -168,11 +169,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _phoneErrorText,
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color.fromARGB(255, 33, 216, 54)),
                             ),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
@@ -194,10 +195,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _passErrorText,
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.purple),
                             ),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
@@ -220,10 +221,10 @@ class _SignupScreenState extends State<SignupScreen> {
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _confirmErrorText,
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.purple),
                             ),
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
@@ -263,7 +264,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                               backgroundColor: Colors.pink,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 16),
                               textStyle: const TextStyle(
                                 fontSize: 18,
@@ -279,7 +280,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           child: RichText(
                             text: TextSpan(
                               text: "Already have an account? ",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
                                 fontWeight: FontWeight.bold,
@@ -287,7 +288,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               children: [
                                 TextSpan(
                                   text: "Log in",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.purple,
                                     decoration: TextDecoration.underline,
                                   ),

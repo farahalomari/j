@@ -62,12 +62,13 @@ class _OTPScreenState extends State<OTPScreen> {
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cleaning_services),
         onPressed: () {
-          print("Floating button was pressed.");
+          //print("Floating button was pressed.");
           otpController.clear();
           // otpController.set(['2', '3', '5', '5', '7']);
           // otpController.setValue('3', 0);
@@ -103,10 +104,10 @@ class _OTPScreenState extends State<OTPScreen> {
             outlineBorderRadius: 15,
             style: const TextStyle(fontSize: 17),
             onChanged: (pin) {
-              print("Changed: $pin");
+              //print("Changed: $pin");
             },
             onCompleted: (pin) {
-              print("Completed: $pin");
+              //print("Completed: $pin");
             }),
       ),
 
