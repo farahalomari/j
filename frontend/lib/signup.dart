@@ -266,6 +266,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               backgroundColor: Colors.pink,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 40, vertical: 16),
+                              foregroundColor: Colors.white,
                               textStyle: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,

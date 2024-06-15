@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj7/home.dart' as home; // Importing home.dart with prefix 'home'
 import 'package:gradproj7/location.dart' as location; // Importing location.dart with prefix 'location'
@@ -16,50 +17,8 @@ void main() {
   );
 }
 
-class TextSection extends StatelessWidget {
-  const TextSection({
-    super.key,
-    required this.description,
-  });
 
-  final String description;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Text(
-        description,
-        softWrap: true,
-        style: const TextStyle(
-          fontSize: 20,
-          color: Color.fromRGBO(164, 0, 82, 10),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-}
-
-class SecondScreen extends StatelessWidget {
-  const SecondScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(
-          child: Text(
-            "Hello welcome back to Jawla !",
-            style: TextStyle(fontSize: 38, color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -97,106 +56,112 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            const TitleSection(
-              name: 'Welcome Back !',
+            Padding(padding: const EdgeInsets.only(top:60,bottom:40),
+              child: RichText(
+                text:  const TextSpan(
+                  children: [
+
+                    TextSpan(
+                      text: " Welcome Back to",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black),
+
+                    ),
+                    TextSpan(
+                        text: " Jawla",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.pink)),
+                  ],
+                ),
+              ),
             ),
             Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Phone Number',
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _phoneController,
+                        style: const TextStyle(color: Colors.black),
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: const UnderlineInputBorder(),
+                          labelText: 'Phone number',
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontSize: 16),
+                          errorText: _phoneErrorText,
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 33, 216, 54)),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      // Password Field
+                      TextFormField(
+                        controller: _passController,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          border: const UnderlineInputBorder(),
+                          labelText: 'Enter your password',
+                          labelStyle: const TextStyle(
+                              color: Colors.black, fontSize: 16),
+                          errorText: _passErrorText,
+                          focusedBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.purple),
+                          ),
+                          enabledBorder: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your password';
+                          }
+                          return null;
+                        },
+                        obscureText: true, // Hides the password input
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const OTPScreen()));
+                        },
+                        child: const Text(
+                          'Forgot your password?',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 15,
+                            color: Colors.purple,
                             fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.left,
                         ),
-                        const SizedBox(height: 10),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.black,
-                          ),
-                          child: TextFormField(
-                            controller: _phoneController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.phone,
-                                color: Colors.white,
-                              ),
-                              hintText: '+962',
-                              hintStyle: TextStyle(color: Colors.white),
-                            ),
-                            validator: (value) => _phoneErrorText,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        const Text(
-                          'Password',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.black,
-                          ),
-                          child: TextFormField(
-                            controller: _passController,
-                            style: const TextStyle(color: Colors.white),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.lock,
-                                color: Colors.white,
-                              ),
-                              hintText: 'Password',
-                              hintStyle: TextStyle(color: Colors.white),
-                            ),
-                            validator: (value) => _passErrorText,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const OTPScreen()));
-                          },
-                          child: const Text(
-                            'Forgot your password?',
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromRGBO(164, 0, 82, 10),
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                        const SizedBox(height: 35),
-                        Center(
+                      ),
+                      const SizedBox(height: 35),
+                      Padding(padding: const EdgeInsets.only(top:50,bottom:15),
+                        child:Center(
                           child: ElevatedButton(
                             onPressed: () {
                               _validatePass(_passErrorText);
@@ -206,47 +171,58 @@ class _LoginScreenState extends State<LoginScreen> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                               backgroundColor: Colors.pink,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 16),
                               foregroundColor: Colors.white,
                               textStyle: const TextStyle(
-                                fontSize: 30,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.black,
+                                color: Colors.white,
                               ),
                             ),
                             child: const Text('Log in'),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: Text(
-                            "Don't Have an account?",
-                            style: TextStyle(
-                              fontSize: 15,
+                      ),
+                      const SizedBox(height: 10),
+                      Center(
+                        child: RichText(
+                          text: TextSpan(
+                            text: "Don't Have an account? ",
+                            style: const TextStyle(
                               color: Colors.black,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
+                            children: [
+                              TextSpan(
+                                text: "Sign up",
+                                style: const TextStyle(
+                                  color: Colors.purple,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                        const SignupScreen(),
+                                      ),
+                                    );
+                                  },
+                              ),
+                            ],
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignupScreen()));
-                          },
-                          child: const TextSection(
-                            description: "Sign-up now !",
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
           ],
         ),
+
         bottomNavigationBar: NavigationBar(
           labelBehavior: labelBehavior,
           selectedIndex: currentPageIndex,
@@ -299,37 +275,3 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class TitleSection extends StatelessWidget {
-  const TitleSection({
-    super.key,
-    required this.name,
-  });
-
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
