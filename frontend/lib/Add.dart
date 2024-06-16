@@ -3,27 +3,24 @@ import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
 
-import 'Add.dart';
-
-
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Card Screen ",
-      home: CardsScreen(),
+      title: "Add Card Screen ",
+      home: AddCardsScreen(),
     ),
   );
 }
-class CardsScreen extends StatefulWidget {
-  const CardsScreen({super.key});
+class AddCardsScreen extends StatefulWidget {
+  const AddCardsScreen({super.key});
 
   @override
-  State<CardsScreen> createState() => _CardsScreenState();
+  State<AddCardsScreen> createState() => _AddCardsScreenState();
 }
 
-class _CardsScreenState extends State<CardsScreen> {
+class _AddCardsScreenState extends State<AddCardsScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -34,7 +31,7 @@ class _CardsScreenState extends State<CardsScreen> {
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            const TitleSection(name: 'Your cards'),
+            const TitleSection(name: 'New Payment'),
             Expanded(
 
               child: Container(
@@ -63,7 +60,7 @@ class _CardsScreenState extends State<CardsScreen> {
                             child: Padding(
                               padding: EdgeInsets.all(10.0),
                               child: Text(
-                                ' Card1',
+                                ' Card',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
@@ -73,64 +70,97 @@ class _CardsScreenState extends State<CardsScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
-                        ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card2',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                        const Padding(padding: EdgeInsets.all(20)),
+                        TextFormField(
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Name of card holder',
+                            labelStyle: TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
-                        ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card3',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        TextFormField(
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Card Number',
+                            labelStyle: TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(20.0),),
-                        const Text('Recent Transactions',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
-
-                        const Padding(padding: EdgeInsets.all(80.0),),
-                        GestureDetector(
-                            onTap: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AddCardsScreen()));
-                            },
-                            child:const Text('Add Card',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ))),
-                        const Padding(padding: EdgeInsets.all(10.0),),
-                        GestureDetector(
-                          onTap: () {
-                            showAlertDialog(context);
+                        const Padding(padding: EdgeInsets.all(10)),
+                        TextFormField(
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.datetime,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Expiry Date',
+                            labelStyle: TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(10)),
+                        TextFormField(
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'CVV',
+                            labelStyle: TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(50)),
+                        ElevatedButton(
+                          onPressed: () {
+                           showAlertDialog(context);
                           },
-
-                          child: const Text("Delete Card",
-                            style:
-                            TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.pink),),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            backgroundColor: Colors.pink,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 16),
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                          child: const Text('Add'),
                         ),
                       ],
                     ),
@@ -234,17 +264,17 @@ showAlertDialog(BuildContext context) {
     child: const Text("Cancel"),
     onPressed:  () {Navigator.push(context,
         MaterialPageRoute(
-            builder: (context) => const CardsScreen()));},
+            builder: (context) => const AddCardsScreen()));},
   );
   Widget continueButton = TextButton(
-    child: const Text("Continue"),
+    child: const Text("Yes"),
     onPressed:  () {},
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Deleting card "),
-    content: const Text("Are you sure you want to delete this card ?"),
+    title: const Text("Adding Card "),
+    content: const Text("Are you sure you want to add this card ?"),
     actions: [
       cancelButton,
       continueButton,
