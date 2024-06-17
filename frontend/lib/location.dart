@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:gradproj7/route.dart';
 import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
 import 'package:geocoding/geocoding.dart';
 
+import 'destination.dart';
 import 'live.dart';
 
 void main() {
@@ -26,10 +25,25 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-
+  String? _currentAddress;
+  Position? _currentPosition;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +76,19 @@ class _LocationScreenState extends State<LocationScreen> {
                             child:Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Colors.grey,
+                                color: Colors.white,
                               ),
-                              child: const TextField(
-                                style: TextStyle(color: Colors.black),
+                              child:  TextField(
+                                style: const TextStyle(color: Colors.black),
+                                readOnly: true,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
-                                  prefixIcon: Icon(
+                                  prefixIcon: const Icon(
                                     Icons.location_searching,
                                     color: Colors.blue,
                                   ),
-                                  hintText: 'Your location',
-                                  hintStyle: TextStyle(color: Colors.black),
+                                  hintText: 'Your location: ${_currentAddress ?? ""}',
+                                  hintStyle: const TextStyle(color: Colors.black),
                                 ),
                               ),
                             ),
@@ -82,13 +97,13 @@ class _LocationScreenState extends State<LocationScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Colors.grey),
-                            child: const TextField(
+                                color: Colors.white),
+                            child:  const TextField(
                               style: TextStyle(color: Colors.black),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
-                                  Icons.location_on,
+                                  Icons.location_on_sharp,
                                   color: Colors.red,
                                 ),
                                 hintText: 'Where to ?',
@@ -160,7 +175,7 @@ class _LocationScreenState extends State<LocationScreen> {
 
                           ),
                           const Padding(
-                            padding: EdgeInsets.only(top: 0,bottom:10),
+                            padding: EdgeInsets.only(top: 0,bottom:1),
                             child: Text('Recent',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
@@ -191,25 +206,23 @@ class _LocationScreenState extends State<LocationScreen> {
                               size: 30,
                             ),
                           ),
-                          //I have removed this part for now cause now we can go to a screen where we get user live location
-                          /*
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const MapScreen()));
-                        },
-                        child: const Align(
-                          alignment: Alignment.bottomRight,
-                          child: Icon(
-                            Icons.double_arrow_rounded,
-                            color: Colors.pink,
-                            size: 40,
+
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Destination()));
+                            },
+                            child: const Align(
+                              alignment: Alignment.bottomRight,
+                              child: Icon(
+                                Icons.double_arrow_rounded,
+                                color: Colors.purple,
+                                size: 40,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-*/
                         ],
                       )),
                 ),
@@ -231,7 +244,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.home),
@@ -267,11 +280,62 @@ class _LocationScreenState extends State<LocationScreen> {
       ),
     );
   }
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      _showSnackBar(
+          'Location services are disabled. Please enable the services');
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        _showSnackBar('Location permissions are denied');
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      _showSnackBar(
+          'Location permissions are permanently denied, we cannot request permissions.');
+      return false;
+    }
+    return true;
+  }
 
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+    if (!hasPermission) return;
+    _currentPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    _getAddressFromLatLng(_currentPosition!);
+  }
 
+  Future<void> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition!.latitude, _currentPosition!.longitude);
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress = "${place.locality},${place.country},${place.street}";
+      });
+    } catch (e) {
+      //print(e);
+    }
+  }
 
+  void _showSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)));
+    }
+  }
 }
+
+
 class MapScreen extends StatelessWidget {
   const MapScreen({super.key});
 
@@ -284,37 +348,4 @@ class MapScreen extends StatelessWidget {
   }
 }
 
-showAlertDialog(BuildContext context) {
 
-  // set up the buttons
-  Widget cancelButton = TextButton(
-    onPressed:() {Navigator.push(context,
-        MaterialPageRoute(
-            builder: (context) => const LocationScreen()));},
-    child: const Text("No"),
-  );
-  Widget continueButton = TextButton(
-    child: const Text("Yes"),
-    onPressed:  () {Navigator.push(context,
-        MaterialPageRoute(
-            builder: (context) => const Permission()));},
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: const Text("Location "),
-    content: const Text("Do you want to get your live location ?"),
-    actions: [
-      cancelButton,
-      continueButton,
-    ],
-  );
-
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}

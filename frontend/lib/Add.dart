@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
+import 'package:u_credit_card/u_credit_card.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,13 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  final name = TextEditingController();
+  final cvv = TextEditingController();
+  final exp = TextEditingController();
+  final number= TextEditingController();
+  final type = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,33 +53,22 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                   ),
                 ),
 
-                child:  Padding(
+                child:   Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
+                        CreditCardUi(
+                          cardHolderFullName: name.text,
+                          cardNumber: number.text,
+                          validThru: exp.text,
+                          cvvNumber: cvv.text,
                         ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.all(20)),
+
+                        const Padding(padding: EdgeInsets.all(5)),
                         TextFormField(
+                          controller: name,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
@@ -88,8 +85,9 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(10)),
+                        const Padding(padding: EdgeInsets.all(3)),
                         TextFormField(
+                          controller: number,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
@@ -106,8 +104,9 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(10)),
+                        const Padding(padding: EdgeInsets.all(3)),
                         TextFormField(
+                          controller: exp,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.datetime,
                           decoration: const InputDecoration(
@@ -124,8 +123,9 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(10)),
+                        const Padding(padding: EdgeInsets.all(3)),
                         TextFormField(
+                          controller: cvv,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
@@ -142,10 +142,29 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(50)),
+                        const Padding(padding: EdgeInsets.all(3)),
+                        TextFormField(
+                          controller: type,
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.name,
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'Credit card type',
+                            labelStyle: TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(3)),
                         ElevatedButton(
                           onPressed: () {
-                           showAlertDialog(context);
+                            showAlertDialog(context);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -162,6 +181,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                           ),
                           child: const Text('Add'),
                         ),
+
                       ],
                     ),
                   ),

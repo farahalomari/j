@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj7/home.dart' as home; // Importing home.dart with prefix 'home'
+import 'package:gradproj7/live.dart';
 import 'package:gradproj7/location.dart' as location; // Importing location.dart with prefix 'location'
 import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
@@ -237,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.home),

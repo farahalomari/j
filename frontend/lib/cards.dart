@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
+import 'package:u_credit_card/u_credit_card.dart';
 
 import 'Add.dart';
-
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,63 +54,24 @@ class _CardsScreenState extends State<CardsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
+                        const Stack(
+                          children: <Widget> [
+                            CreditCardUi(
+                              cardHolderFullName: 'John Doe',
+                              cardNumber: '1234567812345678',
+                              validThru: '10/24',
+                              enableFlipping: true,
+                              topLeftColor: Colors.blue,
+                            ), Positioned(
+                              bottom: 20,
+                              child:CreditCardUi(
+                                cardHolderFullName: 'John Doe',
+                                cardNumber: '1234567812345678',
+                                validThru: '10/24',
+                                enableFlipping: true,),),
+                          ],
                         ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card1',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
-                        ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card2',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.purple,
-                        ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card3',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+
                         const Padding(padding: EdgeInsets.all(20.0),),
                         const Text('Recent Transactions',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
 

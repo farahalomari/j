@@ -1,35 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:gradproj7/settings.dart';
+import 'package:graddraft/location.dart';
+import 'package:graddraft/settings.dart';
 
-import 'location.dart';
+import 'live.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Permission ",
-      home: Permission(),
+      title: "Destination",
+      home: Destination(),
     ),
   );
 }
 
 
 
-class Permission extends StatefulWidget {
-  const Permission({super.key});
+class Destination extends StatefulWidget {
+  const Destination({super.key});
 
   @override
-  State<Permission> createState() => _PermissionState();
+  State<Destination> createState() => _DestinationState();
 }
 
-class _PermissionState extends State<Permission> {
+class _DestinationState extends State<Destination> {
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +60,17 @@ class _PermissionState extends State<Permission> {
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.white,
               ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
+              child:  TextField(
+                style: const TextStyle(color: Colors.black),
+                readOnly: true,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.location_searching,
                     color: Colors.blue,
                   ),
-                  hintText:'Your location',
-                  hintStyle: TextStyle(color: Colors.black),
+                  hintText: 'Your location: ${_currentAddress ?? ""}',
+                  hintStyle: const TextStyle(color: Colors.black),
                 ),
 
               ),
@@ -81,26 +97,22 @@ class _PermissionState extends State<Permission> {
 
             ),
           ),
-          const Padding(padding: EdgeInsets.all(20)),
-          Align(alignment: Alignment.centerLeft,
-            child:Text('ADDRESS: ${_currentAddress ?? ""}'),
-          ),
 
           //Here should be the Map
 
           const Padding(padding: EdgeInsets.all(250)),
           Align(  alignment: Alignment.bottomRight,
             child:GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
-              },
-              child:const Icon(
-                Icons.double_arrow_rounded,
-                color: Colors.purple,
-                size: 40,
-              ),),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(
+                          builder: (context) => const MapScreen()));
+                },
+                child:const Icon(
+                  Icons.double_arrow_rounded,
+                  color: Colors.purple,
+                  size: 40,
+                ),),
 
           ),
         ],
