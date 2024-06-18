@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:graddraft/location.dart';
-import 'package:graddraft/settings.dart';
+import 'package:gradproj7/location.dart';
+import 'package:gradproj7/settings.dart';
 
 import 'live.dart';
 void main() {
@@ -100,19 +100,31 @@ class _DestinationState extends State<Destination> {
 
           //Here should be the Map
 
-          const Padding(padding: EdgeInsets.all(250)),
+          const Padding(padding: EdgeInsets.all(290)),
           Align(  alignment: Alignment.bottomRight,
-            child:GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(
-                          builder: (context) => const MapScreen()));
-                },
-                child:const Icon(
-                  Icons.double_arrow_rounded,
-                  color: Colors.purple,
-                  size: 40,
-                ),),
+            child:ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MapScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                backgroundColor: Colors.pink,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 40, vertical: 16),
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              child: const Text('Confirm'),
+            ),
 
           ),
         ],

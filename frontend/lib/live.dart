@@ -61,24 +61,29 @@ class _PermissionState extends State<Permission> {
             ),
           ),
           const Padding(padding: EdgeInsets.only(top:5)),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.white,
-            ),
-            child: const TextField(
-              readOnly: true,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                prefixIcon: Icon(
-                  Icons.location_on_sharp,
-                  color: Colors.red,
-                ),
-                hintText: 'Where to ?',
-                hintStyle: TextStyle(color: Colors.black),
+          GestureDetector( onDoubleTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(
+                    builder: (context) => const LocationScreen()));
+          },
+            child:Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.white,
               ),
+              child: const TextField(
+                style: TextStyle(color: Colors.black),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.location_on_sharp,
+                    color: Colors.red,
+                  ),
+                  hintText: 'Where to ?',
+                  hintStyle: TextStyle(color: Colors.black),
+                ),
 
+              ),
             ),
           ),
           const Padding(padding: EdgeInsets.all(20)),
@@ -88,21 +93,6 @@ class _PermissionState extends State<Permission> {
 
           //Here should be the Map
 
-          const Padding(padding: EdgeInsets.all(250)),
-          Align(  alignment: Alignment.bottomRight,
-            child:GestureDetector(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
-              },
-              child:const Icon(
-                Icons.double_arrow_rounded,
-                color: Colors.purple,
-                size: 40,
-              ),),
-
-          ),
         ],
         ),
         bottomNavigationBar: NavigationBar(

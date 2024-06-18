@@ -7,6 +7,7 @@ import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
 import 'package:gradproj7/otp.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -35,21 +36,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passController = TextEditingController();
   late String _passErrorText = "";
   final TextEditingController _phoneController = TextEditingController();
-  late String _phoneErrorText = "";
+  late  String _phoneErrorText = "";
 
-  void _validatePass(String value) {
+  bool _validatePass(String value) {
     if (value.isEmpty) {
       setState(() {
         _passErrorText = 'Password is required';
       });
+      return false;
+    }
+    else {
+      return true;
     }
   }
 
-  void _validatePhone(String value) {
+  bool _validatePhone(String value) {
     if (value.isEmpty) {
       setState(() {
         _phoneErrorText = 'Phone is required';
       });
+      return false;
+    }
+    else {
+      return true;
     }
   }
 
@@ -165,8 +174,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         child:Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              _validatePass(_passErrorText);
-                              _validatePhone(_phoneErrorText);
+                              if (_validatePass(_passErrorText) == false &&
+                                  _validatePass(_phoneErrorText) == false ){
+                                _validatePass(_passErrorText);
+                                _validatePhone(_phoneErrorText);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const Permission()),
+                                );
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
@@ -219,54 +237,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-
-        bottomNavigationBar: NavigationBar(
-          labelBehavior: labelBehavior,
-          selectedIndex: currentPageIndex,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          destinations: <Widget>[
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Permission()));
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-            ),
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const location.MapScreen())); // Using location prefix here
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.route),
-                label: 'Routes',
-              ),
-            ),
-            GestureDetector(
-              onDoubleTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
-              },
-              child: const NavigationDestination(
-                icon: Icon(Icons.person),
-                label: 'Profile',
               ),
             ),
           ],

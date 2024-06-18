@@ -54,22 +54,12 @@ class _CardsScreenState extends State<CardsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Stack(
-                          children: <Widget> [
-                            CreditCardUi(
-                              cardHolderFullName: 'John Doe',
-                              cardNumber: '1234567812345678',
-                              validThru: '10/24',
-                              enableFlipping: true,
-                              topLeftColor: Colors.blue,
-                            ), Positioned(
-                              bottom: 20,
-                              child:CreditCardUi(
-                                cardHolderFullName: 'John Doe',
-                                cardNumber: '1234567812345678',
-                                validThru: '10/24',
-                                enableFlipping: true,),),
-                          ],
+                        const CreditCardUi(
+                          cardHolderFullName: 'John Doe',
+                          cardNumber: '1234567812345678',
+                          validThru: '10/24',
+                          enableFlipping: true,
+                          topLeftColor: Colors.blue,
                         ),
 
                         const Padding(padding: EdgeInsets.all(20.0),),
