@@ -2,26 +2,33 @@
 <html>
 <head>
   <base href="$FLUTTER_BASE_HREF">
+
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="gradproj7">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
+
   <title>gradproj7</title>
   <link rel="manifest" href="manifest.json">
+
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
-  <!--leaflet css-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
   <style>
     body {
       margin: 0;
@@ -35,70 +42,70 @@
 </head>
 <body>
   <div id="map"></div>
-  <!--leaflet js-->
+
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+  <!-- leaflet geoson vt -->
+  <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
+  <script src="../assets/leaflet-geojson-vt.js"></script>
+  <!-- routes -->
+  <script src="../assets/map/map.js"></script>
+
   <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-      // Map initialization
-      var map = L.map('map').setView([31.9544, 35.9106], 13);
+    // Initialize the map
+    var map = L.map('map').setView([31.9544, 35.9106], 13);
 
-      var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      });
-      osm.addTo(map);
-
-      // Google Maps layers
-      var googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      });
-      googleStreets.addTo(map);
-
-      var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-      });
-      googleHybrid.addTo(map);
-
-      // Custom marker icon
-      var myIcon = L.icon({
-        iconUrl: '../assets/bus_stop_marker.png',
-        iconSize: [60, 60],
-        iconAnchor: [22, 94],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
-        shadowAnchor: [22, 94]
-      });
-
-      L.marker([31.9544, 35.9106], {icon: myIcon}).addTo(map);
-
-      // Load and add GeoJSON layer
-      function addGeoJsonToMap(geojsonData) {
-        L.geoJSON(geojsonData, {
-          style: function (feature) {
-            return {
-              color: "#ff0000", // Customize your polyline color
-              weight: 4 // Customize your polyline weight
-            };
-          },
-          onEachFeature: function (feature, layer) {
-            if (feature.geometry.type === "Point") {
-              layer.bindPopup("Point: " + feature.properties.name);
-            }
-            if (feature.geometry.type === "LineString" || feature.geometry.type === "MultiLineString") {
-              layer.bindPopup("Route: " + feature.properties.name);
-            }
-          }
-        }).addTo(map);
-      }
-
-      // Fetch GeoJSON data and add to map
-      fetch('assets/map/map.geojson')
-        .then(response => response.json())
-        .then(data => addGeoJsonToMap(data))
-        .catch(error => console.error('Error loading GeoJSON data:', error));
+    // Add Google Hybrid layer
+    var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
+    googleHybrid.addTo(map);
+
+    // Add your custom marker
+    var myIcon = L.icon({
+      iconUrl: '../assets/bus_stop_marker.png', // Corrected path to the marker icon
+      iconSize: [45, 45],
+      iconAnchor: [22, 94],
+      popupAnchor: [-3, -76],
+      //shadowUrl: 'assets/my-icon-shadow.png', // Ensure this path is correct if you have a shadow image
+      shadowSize: [68, 95],
+      shadowAnchor: [22, 94]
+    });
+
+    L.marker([31.9544, 35.9106], {icon: myIcon}).addTo(map);
+
+    // Load and add GeoJSON layer
+    // var geojsonLayer = new L.GeoJSON.AJAX("../assets/map/map.geojson", {
+    //   style: function (feature) {
+    //     return {
+    //       color: "#ff0000", // Customize your polyline color
+    //       weight: 4 // Customize your polyline weight
+    //     };
+    //   },
+    //   onEachFeature: function (feature, layer) {
+    //     if (feature.geometry.type === "Point") {
+    //       layer.bindPopup("Point: " + feature.properties.name);
+    //     }
+    //     if (feature.geometry.type === "LineString") {
+    //       layer.bindPopup("Route: " + feature.properties.name);
+    //     }
+    //   }
+    // });
+    // geojsonLayer.addTo(map);
+
+    var options = {
+  maxZoom: 20,
+  tolerance: 3,
+  debug: 0,
+  style: {
+    fillColor: "#1EB300",
+    color: "#F2FF00",
+  },
+};
+var vtLayer = L.geoJson.vt(data, options).addTo(map);
+
   </script>
 </body>
 </html>
