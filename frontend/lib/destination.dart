@@ -1,35 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 
-import 'location.dart';
+import 'live.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Permission ",
-      home: Permission(),
+      title: "Destination",
+      home: Destination(),
     ),
   );
 }
 
 
 
-class Permission extends StatefulWidget {
-  const Permission({super.key});
+class Destination extends StatefulWidget {
+  const Destination({super.key});
 
   @override
-  State<Permission> createState() => _PermissionState();
+  State<Destination> createState() => _DestinationState();
 }
 
-class _PermissionState extends State<Permission> {
+class _DestinationState extends State<Destination> {
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,54 +60,73 @@ class _PermissionState extends State<Permission> {
                 borderRadius: BorderRadius.circular(50),
                 color: Colors.white,
               ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
+              child:  TextField(
+                style: const TextStyle(color: Colors.black),
+                readOnly: true,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.location_searching,
                     color: Colors.blue,
                   ),
-                  hintText:'Your location',
-                  hintStyle: TextStyle(color: Colors.black),
+                  hintText: 'Your location: ${_currentAddress ?? ""}',
+                  hintStyle: const TextStyle(color: Colors.black),
                 ),
 
               ),
             ),
           ),
           const Padding(padding: EdgeInsets.only(top:5)),
-          GestureDetector( onDoubleTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (context) => const LocationScreen()));
-          },
-            child:Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.white,
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.location_on_sharp,
-                    color: Colors.red,
-                  ),
-                  hintText: 'Where to ?',
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-
-              ),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              color: Colors.white,
             ),
-          ),
-          const Padding(padding: EdgeInsets.all(20)),
-          Align(alignment: Alignment.centerLeft,
-            child:Text('ADDRESS: ${_currentAddress ?? ""}'),
+            child: const TextField(
+              readOnly: true,
+              style: TextStyle(color: Colors.black),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                prefixIcon: Icon(
+                  Icons.location_on_sharp,
+                  color: Colors.red,
+                ),
+                hintText: 'Where to ?',
+                hintStyle: TextStyle(color: Colors.black),
+              ),
+
+            ),
           ),
 
           //Here should be the Map
 
+          const Padding(padding: EdgeInsets.all(290)),
+          Align(  alignment: Alignment.bottomRight,
+            child:ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MapScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30)),
+                backgroundColor: Colors.pink,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 40, vertical: 16),
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
+              ),
+              child: const Text('Confirm'),
+            ),
+
+          ),
         ],
         ),
         bottomNavigationBar: NavigationBar(

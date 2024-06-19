@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradproj7/live.dart';
 import 'package:gradproj7/signup.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/cards.dart';
@@ -287,7 +288,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),
