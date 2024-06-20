@@ -104,7 +104,7 @@ class _CardsScreenState extends State<CardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),
