@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_map/plugin_api.dart';
-import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
+//import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:convert';
 import 'package:geojson/geojson.dart';
@@ -39,14 +39,14 @@ class MapScreenState extends State<MapScreen> {
     geoJson.processedLines.listen((GeoJsonLine line) {
       final List<LatLng> coordinates =
           line.geoSerie?.toLatLng() as List<LatLng>;
-      addPolyline(coordinates); // Add polyline to Google Map
+      //addPolyline(coordinates); // Add polyline to Google Map
     });
 
     geoJson.processedPoints.listen((GeoJsonPoint point) {
       final LatLng position =
           LatLng(point.geoPoint.latitude, point.geoPoint.longitude);
-      addMarker(
-          position.latitude, position.longitude); // Add marker to Google Map
+      //addMarker(
+      //   position.latitude, position.longitude); // Add marker to Google Map
     });
 
     geoJson.endSignal.listen((bool _) => geoJson.dispose());

@@ -1,94 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
-
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
-
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="gradproj7">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
-
   <title>gradproj7</title>
   <link rel="manifest" href="manifest.json">
-
   <script>
     // The value below is injected by flutter build, do not touch.
     const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
-<!-- Google Maps JavaScript API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-<script>
-  let map;
-
-  function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-      center: { lat: 0, lng: 0 },
-      zoom: 13,
-    });
-  }
-
-  function setMapCenter(lat, lng) {
-    map.setCenter({ lat: lat, lng: lng });
-  }
-
-  function addPolyline(coordinates) {
-    const path = coordinates.map(coord => ({ lat: coord.lat, lng: coord.lng }));
-    new google.maps.Polyline({
-      path: path,
-      geodesic: true,
-      strokeColor: '#FF0000',
-      strokeOpacity: 1.0,
-      strokeWeight: 2,
-    }).setMap(map);
-  }
-
-  function addMarker(lat, lng) {
-    new google.maps.Marker({
-      position: { lat: lat, lng: lng },
-      map: map,
-    });
-  }
-</script>
-
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+  </style>
 </head>
 <body>
+  <div id="map"></div>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+  <!-- leaflet geoson vt -->
+  <script src="https://unpkg.com/geojson-vt@3.2.0/geojson-vt.js"></script>
+  <script src="../assets/leaflet-geojson-vt.js"></script>
+  <!-- routes -->
+  <script src="../assets/map/60.js"></script>
+  <script src="../assets/map/54.js"></script>
+
   <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function(engineInitializer) {
-          engineInitializer.initializeEngine().then(function(appRunner) {
-            appRunner.runApp();
-          });
-        }
-      });
+    // Initialize the map
+    var map = L.map('map').setView([31.9544, 35.9106], 13);
+
+    // Add Google Hybrid layer
+    var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
+      maxZoom: 20,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
+    googleHybrid.addTo(map);
+
+    // Custom marker icon
+    var routeMarkerIcon = L.icon({
+      iconUrl: '../assets/route_marker.png',
+      iconSize: [45, 45],
+      iconAnchor: [22, 22], // Centered on the marker
+    });
+
+    // Function to add markers at intervals along a polyline
+    function addMarkersAlongPolyline(polyline, interval) {
+      var latLngs = polyline.getLatLngs();
+      for (var i = 0; i < latLngs.length; i += interval) {
+        L.marker(latLngs[i], {icon: routeMarkerIcon}).addTo(map);
+      }
+    }
+
+    var routeOptions = {
+      color: "#F2FF00",
+      weight: 5
+    };
+
+    // Add routes and markers
+    var route60 = L.geoJSON(r60, {
+      style: routeOptions,
+      onEachFeature: function (feature, layer) {
+        if (feature.geometry.type === "LineString") {
+          var polyline = L.polyline(L.GeoJSON.coordsToLatLngs(feature.geometry.coordinates));
+          polyline.addTo(map);
+          addMarkersAlongPolyline(polyline, 5); // Adjust the interval as needed
+        }
+      }
+    }).addTo(map);
+
+    var route54 = L.geoJSON(r54, {
+      style: routeOptions,
+      onEachFeature: function (feature, layer) {
+        if (feature.geometry.type === "LineString") {
+          var polyline = L.polyline(L.GeoJSON.coordsToLatLngs(feature.geometry.coordinates));
+          polyline.addTo(map);
+          addMarkersAlongPolyline(polyline, 5); // Adjust the interval as needed
+        }
+      }
+    }).addTo(map);
   </script>
 </body>
 </html>
