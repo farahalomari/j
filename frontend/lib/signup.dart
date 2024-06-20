@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gradproj7/location.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
-import 'package:gradproj7/settings.dart';
 import 'package:flutter/gestures.dart';
 
 void main() {

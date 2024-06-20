@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
 import 'package:u_credit_card/u_credit_card.dart';
+
+import 'live.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

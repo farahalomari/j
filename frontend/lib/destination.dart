@@ -101,7 +101,7 @@ class _DestinationState extends State<Destination> {
           //Here should be the Map
 
           const Padding(padding: EdgeInsets.all(290)),
-          Align(  alignment: Alignment.bottomRight,
+          Align(  alignment: Alignment.bottomCenter,
             child:ElevatedButton(
               onPressed: () {
                 Navigator.push(

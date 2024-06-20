@@ -15,8 +15,6 @@ void main() {
   );
 }
 
-
-
 class Permission extends StatefulWidget {
   const Permission({super.key});
 
@@ -37,62 +35,81 @@ class _PermissionState extends State<Permission> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(children: [
-          GestureDetector( onDoubleTap: () {
-            _getCurrentPosition();
-          },
-            child:Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.white,
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.location_searching,
-                    color: Colors.blue,
-                  ),
-                  hintText:'Your location',
-                  hintStyle: TextStyle(color: Colors.black),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              alignment: Alignment.topLeft,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 223, 218, 230),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
                 ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children:[GestureDetector( onDoubleTap: () {
+                      _getCurrentPosition();
+                    },
+                      child:Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                        ),
+                        child: const TextField(
+                          style: TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon: Icon(
+                              Icons.location_searching,
+                              color: Colors.blue,
+                            ),
+                            hintText:'Your location',
+                            hintStyle: TextStyle(color: Colors.black),
+                          ),
 
+                        ),
+                      ),
+                    ),
+                      const Padding(padding: EdgeInsets.only(top:15)),
+                      GestureDetector( onDoubleTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (context) => const LocationScreen()));
+                      },
+                        child:Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                          ),
+                          child: const TextField(
+                            style: TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              prefixIcon: Icon(
+                                Icons.location_on_sharp,
+                                color: Colors.red,
+                              ),
+                              hintText: 'Where to ?',
+                              hintStyle: TextStyle(color: Colors.black),
+                            ),
+
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.all(20)),
+                      Align(alignment: Alignment.centerLeft,
+                        child:Text('ADDRESS: ${_currentAddress ?? ""}'),
+                      ),
+                    ],
+                    //Here should be the Map
+                  ),
+                ),
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.only(top:5)),
-          GestureDetector( onDoubleTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (context) => const LocationScreen()));
-          },
-            child:Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.white,
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.location_on_sharp,
-                    color: Colors.red,
-                  ),
-                  hintText: 'Where to ?',
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-
-              ),
-            ),
-          ),
-          const Padding(padding: EdgeInsets.all(20)),
-          Align(alignment: Alignment.centerLeft,
-            child:Text('ADDRESS: ${_currentAddress ?? ""}'),
-          ),
-
-          //Here should be the Map
-
         ],
         ),
         bottomNavigationBar: NavigationBar(
