@@ -92,7 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _passErrorText = 'Enter a valid password';
+        _passErrorText = 'Enter a valid password, must be at least 8 characters long and include at least one letter, one number, and one special character';
       });
       return false;
     } else {
@@ -103,7 +103,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isPassValid(String pass) {
     //Minimum eight characters, at least one letter, one number and one special character:
     return RegExp(
-            r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+            r'^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$')
         .hasMatch(pass);
   }
 
@@ -128,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // It should be followed by Country code and National number.
     // It may contain white spaces or a hyphen ( – ).
     // the length of phone numbers may vary from 7 digits to 15 digits.
-    return RegExp(r' [+][0-9\-]\s?{6, 15}[0-9]$').hasMatch(phone);
+    return RegExp(r'07(78|77|79)\d{7}').hasMatch(phone);
   }
 
   @override
