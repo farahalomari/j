@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using BackEndForJawla1.Models;
 using BackEndForJawla1.Data;
 using BackEndForJawla1.services;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BackEndForJawla1.Controllers
 {
@@ -29,8 +30,10 @@ namespace BackEndForJawla1.Controllers
 
         //get: api/routes
         [HttpGet]
-        public IActionResult GetRoute(string id) { }
-       
-
+        public IActionResult GetRoute(string id) {
+            return Ok() ;
+        }
+          
+      
     }
 }
