@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj7/live.dart';
-import 'package:gradproj7/signup.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/cards.dart';
 
@@ -53,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _passErrorText = 'Enter a valid password';
+        _passErrorText = 'Enter a valid password of minimum 8 characters Minimum eight characters, at least one letter, one number and one special character';
       });
       return false;
     } else {
