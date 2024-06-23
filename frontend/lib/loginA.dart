@@ -1,20 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gradproj7/home.dart' as home; // Importing home.dart with prefix 'home'
-import 'package:gradproj7/live.dart';
-import 'package:gradproj7/location.dart' as location; // Importing location.dart with prefix 'location'
-import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
-import 'package:gradproj7/otp.dart';
+import 'signupA.dart';
 
+import 'liveA.dart';
+import 'otpA.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Login Screen",
-      home: LoginScreen(),
+      title: "LoginA Screen",
+      home: LoginAScreen(),
     ),
   );
 }
@@ -22,14 +19,14 @@ void main() {
 
 
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginAScreen extends StatefulWidget {
+  const LoginAScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginAScreen> createState() => _LoginAScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginAScreenState extends State<LoginAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -41,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _validatePass(String value) {
     if (value.isEmpty) {
       setState(() {
-        _passErrorText = 'Password is required';
+        _passErrorText = 'كلمة السر مطلوبة';
       });
       return false;
     }
@@ -53,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _validatePhone(String value) {
     if (value.isEmpty) {
       setState(() {
-        _phoneErrorText = 'Phone is required';
+        _phoneErrorText = 'رقم الهاتف مطلوب';
       });
       return false;
     }
@@ -75,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
 
                     TextSpan(
-                      text: " Welcome Back to",
+                      text: " أهلا بك ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -84,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     ),
                     TextSpan(
-                        text: " Jawla",
+                        text: " بجولة",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -107,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           border: const UnderlineInputBorder(),
-                          labelText: 'Phone number',
+                          labelText: 'رقم الهاتف',
                           labelStyle: const TextStyle(
                               color: Colors.black, fontSize: 16),
                           errorText: _phoneErrorText,
@@ -121,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Enter your phone number';
+                            return 'ادخل رقم الهاتف';
                           }
                           return null;
                         },
@@ -133,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           border: const UnderlineInputBorder(),
-                          labelText: 'Enter your password',
+                          labelText: ' كلمة السر',
                           labelStyle: const TextStyle(
                               color: Colors.black, fontSize: 16),
                           errorText: _passErrorText,
@@ -146,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'ادخل كلمة السر';
                           }
                           return null;
                         },
@@ -157,10 +154,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const OTPScreen()));
+                                  builder: (context) => const OTPAScreen()));
                         },
                         child: const Text(
-                          'Forgot your password?',
+                          'لا تتذكر كلمة السر ؟',
                           style: TextStyle(
                             fontSize: 15,
                             color: Colors.purple,
@@ -182,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const Permission()),
+                                      builder: (context) => const PermissionA()),
                                 );
                               }
                             },
@@ -199,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            child: const Text('Log in'),
+                            child: const Text('تسجيل دخول'),
                           ),
                         ),
                       ),
@@ -207,7 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Center(
                         child: RichText(
                           text: TextSpan(
-                            text: "Don't Have an account? ",
+                            text: "لا يوجد لك حساب؟ ",
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -215,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             children: [
                               TextSpan(
-                                text: "Sign up",
+                                text: "افتح حساب",
                                 style: const TextStyle(
                                   color: Colors.purple,
                                 ),
@@ -225,7 +222,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                        const SignupScreen(),
+                                        const SignupAScreen(),
                                       ),
                                     );
                                   },

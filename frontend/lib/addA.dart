@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:gradproj7/location.dart';
-import 'package:gradproj7/settings.dart';
-import 'live.dart';
+import 'settingsA.dart';
+import 'liveA.dart';
+import 'locationA.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Add Card Screen ",
-      home: AddCardsScreen(),
+      title: "Add Card A Screen ",
+      home: AddCardsAScreen(),
     ),
   );
 }
-class AddCardsScreen extends StatefulWidget {
-  const AddCardsScreen({super.key});
+class AddCardsAScreen extends StatefulWidget {
+  const AddCardsAScreen({super.key});
 
   @override
-  State<AddCardsScreen> createState() => _AddCardsScreenState();
+  State<AddCardsAScreen> createState() => _AddCardsAScreenState();
 }
-
 enum SingingCharacter { lafayette, jefferson }
 
-class _AddCardsScreenState extends State<AddCardsScreen> {
+class _AddCardsAScreenState extends State<AddCardsAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
 
   final cvv = TextEditingController();
+  final exp = TextEditingController();
   final number= TextEditingController();
+
   late String _cvvErrorText = "";
   late String _numberErrorText = "";
 
-  SingingCharacter? _character = SingingCharacter.lafayette;
+   SingingCharacter? _character = SingingCharacter.lafayette;
 
 
 
@@ -40,11 +41,11 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
   bool _validateCVV(String value) {
     if (value.isEmpty) {
       setState(() {
-        _cvvErrorText = 'required';
+        _cvvErrorText = 'مطلوب';
       });
       return false;
     } else if (value.isNotEmpty && !isCvvValid(value)){
-      _cvvErrorText = 'enter a valid cvv';
+      _cvvErrorText = 'ادخل cvv صحيح';
       return false;
     } else {
       return true;
@@ -59,11 +60,11 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
   bool _validateNumber(String value) {
     if (value.isEmpty) {
       setState(() {
-        _numberErrorText = 'required';
+        _numberErrorText = 'مطلوب';
       });
       return false;
     } else if (value.isNotEmpty && !isNumberValid(value)){
-      _numberErrorText = 'enter a valid number';
+      _numberErrorText = 'ادخل رقم صحيح';
       return false;
     } else {
       return true;
@@ -99,8 +100,9 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            const TitleSection(name: 'New Payment'),
+            const TitleSection(name: 'بطاقة جديدة'),
             Expanded(
+
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.topLeft,
@@ -113,45 +115,47 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                 ),
 
                 child:   Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Credit card type:",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),
+                      const Text("نوع البطاقة:",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),
+                    const Padding(padding: EdgeInsets.all(5)),
+
+                    ListTile(
+                      title: const Text('باص عمان'),
+                      leading: Radio<SingingCharacter>(
+                        value: SingingCharacter.lafayette,
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                    ),
+
+                    ListTile(
+                      title: const Text('بطاقة ائتمانية'),
+                      leading: Radio<SingingCharacter>(
+                        value: SingingCharacter.jefferson,
+                        groupValue: _character,
+                        onChanged: (SingingCharacter? value) {
+                          setState(() {
+                            _character = value;
+                          });
+                        },
+                      ),
+                    ),
+
                         const Padding(padding: EdgeInsets.all(5)),
-
-                        ListTile(
-                          title: const Text('Amman Bus'),
-                          leading: Radio<SingingCharacter>(
-                            value: SingingCharacter.lafayette,
-                            groupValue: _character,
-                            onChanged: (SingingCharacter? value) {
-                              setState(() {
-                                _character = value;
-                              });
-                            },
-                          ),
-                        ),
-
-                        ListTile(
-                          title: const Text('Credit Card'),
-                          leading: Radio<SingingCharacter>(
-                            value: SingingCharacter.jefferson,
-                            groupValue: _character,
-                            onChanged: (SingingCharacter? value) {
-                              setState(() {
-                                _character = value;
-                              });
-                            },
-                          ),
-                        ),
-                        const Padding(padding: EdgeInsets.all(10)),
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.name,
                           decoration: const InputDecoration(
-                            labelText: 'Name of card holder',
+                            border: UnderlineInputBorder(),
+                            labelText: 'اسم مستخدم البطاقة',
                             labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 16),
                             focusedBorder: UnderlineInputBorder(
@@ -164,43 +168,39 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                           ),
                         ),
                         const Padding(padding: EdgeInsets.all(5)),
-
                         TextFormField(
                           controller: number,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.number,
-                          decoration:  InputDecoration(
-                            border: const UnderlineInputBorder(),
-                            labelText: 'Card Number',
-                            labelStyle: const TextStyle(
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: 'رقم البطاقة',
+                            labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 16),
-                            errorText: _numberErrorText,
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color.fromARGB(255, 33, 216, 54)),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your card number';
+                              return 'ادخل رقم صحيح';
                             }
                             return null;
                           },
                         ),
                         const Padding(padding: EdgeInsets.all(5)),
-
                         TextFormField(
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.datetime,
                           decoration: const InputDecoration(
                             border: UnderlineInputBorder(),
-                            labelText: 'Expiry Date',
+                            labelText: 'تاريخ انتهاء البطاقة',
                             labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 16),
-
                             focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color.fromARGB(255, 33, 216, 54)),
@@ -209,62 +209,58 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
-
                         ),
                         const Padding(padding: EdgeInsets.all(5)),
-
                         TextFormField(
                           controller: cvv,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: const UnderlineInputBorder(),
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
                             labelText: 'CVV',
-                            labelStyle: const TextStyle(
+                            labelStyle: TextStyle(
                                 color: Colors.black, fontSize: 16),
-                            errorText: _cvvErrorText,
-                            focusedBorder: const UnderlineInputBorder(
+                            focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(
                                   color: Color.fromARGB(255, 33, 216, 54)),
                             ),
-                            enabledBorder: const UnderlineInputBorder(
+                            enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your cvv';
+                              return 'ادخل cvv صحيح';
                             }
                             return null;
                           },
                         ),
+
                         const Padding(padding: EdgeInsets.all(20)),
-
-                        Align( alignment: Alignment.bottomCenter,
-                          child:ElevatedButton(
-                            onPressed: () {
-                              if (_validateCVV(_cvvErrorText) == false ||
-                                  _validateNumber(_numberErrorText) == false) {
-                                _validateCVV(_cvvErrorText);
-                                _validateNumber(_numberErrorText);
-                              }
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30)),
-                              backgroundColor: Colors.pink,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 40, vertical: 16),
-                              foregroundColor: Colors.white,
-                              textStyle: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),
+                        Align(alignment: Alignment.bottomCenter,
+                        child:ElevatedButton(
+                          onPressed: () {
+                            if (_validateCVV(_cvvErrorText) == false ||
+                                _validateNumber(_numberErrorText) == false) {
+                              _validateCVV(_cvvErrorText);
+                              _validateNumber(_numberErrorText);
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            backgroundColor: Colors.pink,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 40, vertical: 16),
+                            foregroundColor: Colors.white,
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
                             ),
-                            child: const Text('Add'),
                           ),
+                          child: const Text('اضافة'),
+                        ),
                         ),
                       ],
                     ),
@@ -287,7 +283,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const Permission()));
+                        builder: (context) => const PermissionA()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),
@@ -298,7 +294,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
+                        builder: (context) => const LocationAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.route),
@@ -309,7 +305,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
+                        builder: (context) => const SettingsAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.person),
@@ -347,10 +343,10 @@ class TitleSection extends StatelessWidget {
                 Text(
                   name,
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 35,
+                      fontWeight: FontWeight.bold, fontSize: 30,
                       color: Colors.black87
                   ),
-                  textAlign: TextAlign.center,
+
                 ),
               ],
             ),

@@ -40,6 +40,7 @@ dependencies:
   geojson: ^1.0.0
   js: ^0.6.3
   u_credit_card: ^1.3.1
+  postgres: ^2.4.3
 
 
   # The following adds the Cupertino Icons font to your application.
