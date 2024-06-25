@@ -2,11 +2,53 @@ import 'package:flutter/material.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
 import 'package:flutter/gestures.dart';
-import 'package:postgres/postgres.dart';
+import 'package:sqflite/sqflite.dart';
+import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 
-void main() {
+void main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+// Open the database and store the reference.
+
+  final database = openDatabase(
+
+    // Set the path to the database. Note: Using the `join` function from the
+    // `path` package is best practice to ensure the path is correctly
+    // constructed for each platform.
+
+    join(await getDatabasesPath(), 'user.db'),
+
+    version: 1,
+
+  );
+
+  Future<void> insertUser(User user) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Insert the user into the correct table. You might also specify the
+    // `conflictAlgorithm` to use in case the same dog is inserted twice.
+    //
+    // In this case, replace any previous data.
+    await db.insert(
+      'user',
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  var fido = User(
+    id: 0,
+    phoneNumber: '123',
+  );
+
+  await insertUser(fido);
+
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -52,45 +94,24 @@ class MyApp extends StatelessWidget {
 //     );
 //   }
 // } //text
-/*
-var databaseConnection = PostgreSQLConnection(
-    databaseHost, databasePort, databaseName,
-    queryTimeoutInSeconds: 3600,
-    timeoutInSeconds: 3600,
-    username: username,
-    password: password);
 
-String databaseName='Jawla';
-int databasePort= 123 ;
-String databaseHost='J';
 
-String username='juju';
-String password='yellow';
 
-int id=123;
-initDatabaseConnection() async {
-  databaseConnection.open().then((value) {
-    debugPrint("Database Connected!");
-  });
-}
-  phoneConnect()async {
-
-  List<Map<String, Map<String, dynamic>>> result = await
-  initDatabaseConnection
-  ().mappedResultsQuery
-  ("SELECT * FROM,
-  ,$user, ,WHERE, userID, = id,");
-
-}
-*/
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
+
+
   @override
   State<SignupScreen> createState() => _SignupScreenState();
+
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
+
+
+
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -162,6 +183,8 @@ class _SignupScreenState extends State<SignupScreen> {
     return RegExp(r'07(78|77|79)\d{7}').hasMatch(phone);
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -189,6 +212,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
+
                           controller: _phoneController,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.phone,
@@ -384,5 +408,33 @@ class TitleSection extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+
+class User {
+  final int id;
+  final String phoneNumber;
+
+
+  User({
+    required this.id,
+    required this.phoneNumber,
+  });
+
+  // Convert a Dog into a Map. The keys must correspond to the names of the
+  // columns in the database.
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'phone Number': phoneNumber,
+    };
+  }
+
+  // Implement toString to make it easier to see information about
+  // each dog when using the print statement.
+  @override
+  String toString() {
+    return 'Dog{id: $id, name: $phoneNumber}';
   }
 }
