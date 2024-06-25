@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
+import 'package:postgres/postgres.dart';
 
 void main() async{
 
@@ -40,7 +41,7 @@ void main() async{
   }
 
   var fido = User(
-    id: 0,
+    id: 1,
     phoneNumber: '123',
   );
 
@@ -109,7 +110,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
-
+String num= _phoneController.text;
 
 
   int currentPageIndex = 0;
