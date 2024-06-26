@@ -44,6 +44,8 @@
   <!-- routes -->
   <script src="../assets/map/60.js"></script>
   <script src="../assets/map/54.js"></script>
+  <script src="../assets/map/route_marker.png"></script>
+
 
   <script>
     // Initialize the map
@@ -56,9 +58,9 @@
     });
     googleHybrid.addTo(map);
 
-    // Custom marker icon
+   // Custom marker icon
     var routeMarkerIcon = L.icon({
-      iconUrl: '../assets/route_marker.png',
+      iconUrl: '../assets/route_marker.svg',
       iconSize: [45, 45],
       iconAnchor: [22, 22], // Centered on the marker
     });
@@ -72,7 +74,7 @@
     }
 
     var routeOptions = {
-      color: "#F2FF00",
+      color: blue,
       weight: 5
     };
 
