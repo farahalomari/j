@@ -247,15 +247,15 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                           Center(
                             child: ElevatedButton(
                               onPressed: () {
-                                if (_validatePass(_passErrorText) == false ||
-                                    _validatePass(_phoneErrorText) == false ||
+                                if (_validatePass(_passController.text) == false ||
+                                    _validatePhone(_phoneController.text) == false ||
                                     _validateConfirm(
-                                        _confirmErrorText, _passErrorText) ==
+                                        _confirmController.text, _passController.text) ==
                                         false) {
-                                  _validatePass(_passErrorText);
-                                  _validatePhone(_phoneErrorText);
+                                  _validatePass(_passController.text);
+                                  _validatePhone(_phoneController.text);
                                   _validateConfirm(
-                                      _confirmErrorText, _passErrorText);
+                                      _confirmController.text, _passController.text);
                                 }
                               },
                               style: ElevatedButton.styleFrom(

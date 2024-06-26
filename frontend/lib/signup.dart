@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
 import 'package:flutter/gestures.dart';
-//import 'package:sqflite/sqflite.dart';
-//import 'dart:async';
+import 'dart:async';
+import 'package:postgres/postgres.dart';
 import 'package:flutter/widgets.dart';
-//import 'package:path/path.dart';
-import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
 
 void main() async{
@@ -263,30 +262,36 @@ class _SignupScreenState extends State<SignupScreen> {
                         Center(
                           child: ElevatedButton(
                             onPressed: () async {
-                              if (_validatePass(_passErrorText) == false ||
-                                  _validatePass(_phoneErrorText) == false ||
+                              if (_validatePass(_passController.text) == false ||
+                                  _validatePhone(_phoneController.text) == false ||
                                   _validateConfirm(
-                                          _confirmErrorText, _passErrorText) ==
+                                      _confirmController.text, _passController.text) ==
                                       false) {
-                                _validatePass(_passErrorText);
-                                _validatePhone(_phoneErrorText);
+                                _validatePass(_passController.text);
+                                _validatePhone(_phoneController.text);
                                 _validateConfirm(
-                                    _confirmErrorText, _passErrorText);
-                              } else {
-                                var url = "http://192.168.1.102/localconnect/register.php";
-                                var response = await http.post(url as Uri,body:{
-                                  "phonenumber":_phoneController.text,
-                                  "password": _passController.text,
-                                });
-                                var data =json.decode(response.body);
-                                if(data == "success") {
-                                  Navigator.push(
+                                    _confirmController.text, _passController.text);
+                              }else {
+                                final conn = await Connection.open(Endpoint(
+                                  host: 'localhost',
+                                  database: 'users',
+                                  username: 'J',
+                                  password: 'queen',
+                                ));
+
+                                final result1 = await conn.execute(
+                                  r'INSERT INTO user (PhoneNumber) VALUES ($_phoneController.text)',
+                                );
+                                final result2 = await conn.execute(
+                                  r'INSERT INTO user (Password) VALUES ($_passController.text)',
+                                );
+
+                                Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (
                                             context) => const OTPScreen()),
                                   );
-                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

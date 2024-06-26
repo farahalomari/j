@@ -171,10 +171,10 @@ class _LoginAScreenState extends State<LoginAScreen> {
                         child:Center(
                           child: ElevatedButton(
                             onPressed: () {
-                              if (_validatePass(_passErrorText) == false ||
-                                  _validatePass(_phoneErrorText) == false ){
-                                _validatePass(_passErrorText);
-                                _validatePhone(_phoneErrorText);
+                              if (_validatePass(_passController.text) == false ||
+                                  _validatePhone(_phoneController.text) == false ){
+                                _validatePass(_passController.text);
+                                _validatePhone(_phoneController.text);
                               } else {
                                 Navigator.push(
                                   context,

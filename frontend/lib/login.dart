@@ -8,6 +8,7 @@ import 'package:gradproj7/location.dart' as location; // Importing location.dart
 import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
 import 'package:gradproj7/otp.dart';
+import 'package:postgres/postgres.dart';
 
 
 void main() {
@@ -176,19 +177,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         child:Center(
                           child: ElevatedButton(
                             onPressed: () async{
-                              if (_validatePass(_passErrorText) == false ||
-                                  _validatePass(_phoneErrorText) == false ){
-                                _validatePass(_passErrorText);
-                                _validatePhone(_phoneErrorText);
-                              } else {
-                                var url = "http://192.168.1.102/localconnect/login.php";
-                                var response = await http.post(
-                                    url as Uri, body: {
-                                  "phonenumber": _phoneController.text,
-                                  "password": _passController.text,
-                                });
-                                var data = json.decode(response.body);
-                                if (data == "success") {
+                              if (_validatePass(_passController.text) == false ||
+                                  _validatePhone(_phoneController.text) == false ){
+                                _validatePass(_passController.text);
+                                _validatePhone(_phoneController.text);
+                              }  else {
+                                final conn = await Connection.open(Endpoint(
+                                  host: 'localhost',
+                                  database: 'users',
+                                  username: 'J',
+                                  password: 'queen',
+                                ));
+
+                                final result2 = await conn.execute(
+                                  Sql.named(
+                                      'SELECT * FROM a_table WHERE PhoneNumber=$_phoneController'),
+                                );
+                                if (result2.isNotEmpty) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
