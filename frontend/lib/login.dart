@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj7/home.dart' as home; // Importing home.dart with prefix 'home'
@@ -173,17 +175,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       Padding(padding: const EdgeInsets.only(top:50,bottom:15),
                         child:Center(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async{
                               if (_validatePass(_passErrorText) == false ||
                                   _validatePass(_phoneErrorText) == false ){
                                 _validatePass(_passErrorText);
                                 _validatePhone(_phoneErrorText);
                               } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Permission()),
-                                );
+                                var url = "http://192.168.1.102/localconnect/login.php";
+                                var response = await http.post(
+                                    url as Uri, body: {
+                                  "phonenumber": _phoneController.text,
+                                  "password": _passController.text,
+                                });
+                                var data = json.decode(response.body);
+                                if (data == "success") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => const Permission()),
+                                  );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(

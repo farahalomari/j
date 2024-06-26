@@ -1,51 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
 import 'package:flutter/gestures.dart';
-import 'package:sqflite/sqflite.dart';
-import 'dart:async';
+//import 'package:sqflite/sqflite.dart';
+//import 'dart:async';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:postgres/postgres.dart';
+//import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
+
 
 void main() async{
 
-  WidgetsFlutterBinding.ensureInitialized();
-// Open the database and store the reference.
 
-  final database = openDatabase(
-
-    // Set the path to the database. Note: Using the `join` function from the
-    // `path` package is best practice to ensure the path is correctly
-    // constructed for each platform.
-
-    join(await getDatabasesPath(), 'user.db'),
-
-    version: 1,
-
-  );
-
-  Future<void> insertUser(User user) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Insert the user into the correct table. You might also specify the
-    // `conflictAlgorithm` to use in case the same dog is inserted twice.
-    //
-    // In this case, replace any previous data.
-    await db.insert(
-      'user',
-      user.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  var fido = User(
-    id: 1,
-    phoneNumber: '123',
-  );
-
-  await insertUser(fido);
 
   runApp(const MyApp());
 }
@@ -110,7 +77,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
-String num= _phoneController.text;
+
 
 
   int currentPageIndex = 0;
@@ -213,7 +180,6 @@ String num= _phoneController.text;
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
-
                           controller: _phoneController,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.phone,
@@ -296,7 +262,7 @@ String num= _phoneController.text;
                         const SizedBox(height: 35),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_validatePass(_passErrorText) == false ||
                                   _validatePass(_phoneErrorText) == false ||
                                   _validateConfirm(
@@ -307,11 +273,20 @@ String num= _phoneController.text;
                                 _validateConfirm(
                                     _confirmErrorText, _passErrorText);
                               } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const OTPScreen()),
-                                );
+                                var url = "http://192.168.1.102/localconnect/register.php";
+                                var response = await http.post(url as Uri,body:{
+                                  "phonenumber":_phoneController.text,
+                                  "password": _passController.text,
+                                });
+                                var data =json.decode(response.body);
+                                if(data == "success") {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => const OTPScreen()),
+                                  );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -413,29 +388,3 @@ class TitleSection extends StatelessWidget {
 }
 
 
-class User {
-  final int id;
-  final String phoneNumber;
-
-
-  User({
-    required this.id,
-    required this.phoneNumber,
-  });
-
-  // Convert a Dog into a Map. The keys must correspond to the names of the
-  // columns in the database.
-  Map<String, Object?> toMap() {
-    return {
-      'id': id,
-      'phone Number': phoneNumber,
-    };
-  }
-
-  // Implement toString to make it easier to see information about
-  // each dog when using the print statement.
-  @override
-  String toString() {
-    return 'Dog{id: $id, name: $phoneNumber}';
-  }
-}
