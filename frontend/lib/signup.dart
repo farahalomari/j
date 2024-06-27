@@ -274,17 +274,20 @@ class _SignupScreenState extends State<SignupScreen> {
                               }else {
                                 final conn = await Connection.open(Endpoint(
                                   host: 'localhost',
-                                  database: 'users',
+                                  database: 'postgres',
                                   username: 'postgres',
-                                  password: 'queenoftwistedgames',
+                                  password: 'queenofgames',
+                                  port: 5432,
+
                                 ));
 
-                                final result1 = await conn.execute(
+                                conn.execute(
                                   'INSERT INTO user (phoneNumber) VALUES ($_phoneController)',
                                 );
-                                final result2 = await conn.execute(
+                                conn.execute(
                                   'INSERT INTO user (password) VALUES ($_passController)',
                                 );
+                                conn.close();
 
                                 Navigator.push(
                                     context,

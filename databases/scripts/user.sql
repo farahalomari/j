@@ -4,7 +4,7 @@ BEGIN
     IF NOT EXISTS (
         SELECT 1 FROM information_schema.schemata WHERE schema_name = 'user'
     ) THEN
-        CREATE SCHEMA "busNetwork";
+        CREATE SCHEMA "user";
     END IF;
 END $$;
 

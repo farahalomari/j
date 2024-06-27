@@ -184,15 +184,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               }  else {
                                 final conn = await Connection.open(Endpoint(
                                   host: 'localhost',
-                                  database: 'users',
+                                  database: 'postgres',
                                   username: 'postgres',
-                                  password: 'queenoftwistedgames',
+                                  password: 'queenofgames',
+                                  port: 5432,
+
                                 ));
 
                                 final result2 = await conn.execute(
                                   Sql.named(
                                       'SELECT * FROM user WHERE PhoneNumber=$_phoneController AND passwrod = $_passController'),
                                 );
+                                conn.close();
                                 if (result2.isNotEmpty) {
                                   Navigator.push(
                                     context,
