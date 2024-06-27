@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj7/settings.dart';
+import 'package:postgres/postgres.dart';
 import 'cardsA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
@@ -246,7 +247,7 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                           const SizedBox(height: 35),
                           Center(
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async{
                                 if (_validatePass(_passController.text) == false ||
                                     _validatePhone(_phoneController.text) == false ||
                                     _validateConfirm(
@@ -256,6 +257,21 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                                   _validatePhone(_phoneController.text);
                                   _validateConfirm(
                                       _confirmController.text, _passController.text);
+                                }
+                                else{
+                                  final conn = await Connection.open(Endpoint(
+                                    host: 'localhost',
+                                    database: 'users',
+                                    username: 'postgres',
+                                    password: 'queenoftwistedgames',
+                                  ));
+
+                                  final result1 = await conn.execute(
+                                    'INSERT INTO user (phoneNumber) VALUES ($_phoneController)',
+                                  );
+                                  final result2 = await conn.execute(
+                                    'INSERT INTO user (password) VALUES ($_passController)',
+                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(

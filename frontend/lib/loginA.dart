@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:postgres/postgres.dart';
 import 'signupA.dart';
 
 import 'liveA.dart';
@@ -170,17 +171,31 @@ class _LoginAScreenState extends State<LoginAScreen> {
                       Padding(padding: const EdgeInsets.only(top:50,bottom:15),
                         child:Center(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async{
                               if (_validatePass(_passController.text) == false ||
                                   _validatePhone(_phoneController.text) == false ){
                                 _validatePass(_passController.text);
                                 _validatePhone(_phoneController.text);
                               } else {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const PermissionA()),
+                                final conn = await Connection.open(Endpoint(
+                                  host: 'localhost',
+                                  database: 'users',
+                                  username: 'postgres',
+                                  password: 'queenoftwistedgames',
+                                ));
+
+                                final result2 = await conn.execute(
+                                  Sql.named(
+                                      'SELECT * FROM user WHERE PhoneNumber=$_phoneController AND passwrod = $_passController'),
                                 );
+                                if (result2.isNotEmpty) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => const PermissionA()),
+                                  );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
