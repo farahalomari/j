@@ -26,6 +26,8 @@ class LocationAScreen extends StatefulWidget {
 class _LocationAScreenState extends State<LocationAScreen> {
   String? _currentAddress;
   Position? _currentPosition;
+  final TextEditingController _destinationController = TextEditingController();
+  String ? _output;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -97,9 +99,10 @@ class _LocationAScreenState extends State<LocationAScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white),
-                            child:  const TextField(
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                            child:   TextField(
+                              controller: _destinationController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.location_on_sharp,
@@ -208,18 +211,26 @@ class _LocationAScreenState extends State<LocationAScreen> {
 
                           GestureDetector(
                             onTap: () {
+                              locationFromAddress(_destinationController.text)
+                                  .then((locations) {
+                                var output = 'No results found.';
+                                if (locations.isNotEmpty) {
+                                  output = locations[0].toString();
+                                }
+                                setState(() {
+                                  _output = output;
+                                });
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const DestinationA()));
                             },
-                            child: const Align(
-                              alignment: Alignment.bottomRight,
-                              child: Icon(
-                                Icons.double_arrow_rounded,
-                                color: Colors.purple,
-                                size: 40,
-                              ),
+                            child:   const Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text('انتهاء',style: TextStyle(fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.purple),)
                             ),
                           ),
                         ],

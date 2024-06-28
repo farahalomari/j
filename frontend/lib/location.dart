@@ -27,6 +27,8 @@ class LocationScreen extends StatefulWidget {
 class _LocationScreenState extends State<LocationScreen> {
   String? _currentAddress;
   Position? _currentPosition;
+  final TextEditingController _destinationController = TextEditingController();
+  String ? _output;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -49,7 +51,7 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
             Expanded(
@@ -98,15 +100,16 @@ class _LocationScreenState extends State<LocationScreen> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white),
-                            child:  const TextField(
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                            child:   TextField(
+                              controller: _destinationController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration:   const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.location_on_sharp,
                                   color: Colors.red,
                                 ),
-                                hintText: 'Where to ?',
+                                hintText: 'Where to ? ',
                                 hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -206,21 +209,28 @@ class _LocationScreenState extends State<LocationScreen> {
                               size: 30,
                             ),
                           ),
-
                           GestureDetector(
                             onTap: () {
+                              locationFromAddress(_destinationController.text)
+                                  .then((locations) {
+                                var output = 'No results found.';
+                                if (locations.isNotEmpty) {
+                                  output = locations[0].toString();
+                                }
+                                setState(() {
+                                  _output = output;
+                                });
+                              });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const Destination()));
                             },
-                            child: const Align(
-                              alignment: Alignment.bottomRight,
-                              child: Icon(
-                                Icons.double_arrow_rounded,
-                                color: Colors.purple,
-                                size: 40,
-                              ),
+                            child:   const Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text('Done',style: TextStyle(fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.purple),)
                             ),
                           ),
                         ],

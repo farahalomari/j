@@ -26,6 +26,8 @@ class Destination extends StatefulWidget {
 }
 
 class _DestinationState extends State<Destination> {
+  final TextEditingController _destinationController = TextEditingController();
+  String ? _output;
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
@@ -38,7 +40,16 @@ class _DestinationState extends State<Destination> {
   void initState() {
     super.initState();
     _getCurrentPosition();
-
+    locationFromAddress(_destinationController.text)
+        .then((locations) {
+      var output = 'No results found.';
+      if (locations.isNotEmpty) {
+        output = locations[0].toString();
+      }
+      setState(() {
+        _output = output;
+      });
+    });
   }
 
   @override
@@ -82,10 +93,10 @@ class _DestinationState extends State<Destination> {
               borderRadius: BorderRadius.circular(50),
               color: Colors.white,
             ),
-            child: const TextField(
-              readOnly: true,
-              style: TextStyle(color: Colors.black),
-              decoration: InputDecoration(
+            child:  TextField(
+              controller: _destinationController,
+              style: const TextStyle(color: Colors.black),
+              decoration: const InputDecoration(
                 border: InputBorder.none,
                 prefixIcon: Icon(
                   Icons.location_on_sharp,
