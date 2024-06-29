@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
+import 'package:u_credit_card/u_credit_card.dart';
+import 'package:gradproj7/live.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Card Screen ",
-      home: CardsScreen(),
-    ),
-  );
-}
+import 'Add.dart';
+
+
 class CardsScreen extends StatefulWidget {
   const CardsScreen({super.key});
 
@@ -28,7 +22,8 @@ class _CardsScreenState extends State<CardsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        appBar: AppBar(title: const Text('Card Screen'),),
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
             const TitleSection(name: 'Your cards'),
@@ -38,7 +33,7 @@ class _CardsScreenState extends State<CardsScreen> {
                 width: double.infinity,
                 alignment: Alignment.topLeft,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 223, 218, 230),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -48,86 +43,40 @@ class _CardsScreenState extends State<CardsScreen> {
                 child:  Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                        const SizedBox(height: 9,width: 50,),
-                        Container(decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(),
-                          color: Colors.pink,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CreditCardUi(
+                          cardHolderFullName: 'John Doe',
+                          cardNumber: '1234567812345678',
+                          validThru: '10/24',
+                          enableFlipping: true,
+                          topLeftColor: Colors.blue,
                         ),
-                          child: const Center(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                ' Card1',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                          const SizedBox(height: 9,width: 50,),
-                          Container(decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.horizontal(),
-                            color: Colors.black,
-                          ),
-                            child: const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  ' Card2',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 9,width: 50,),
-                          Container(decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.horizontal(),
-                            color: Colors.deepPurple,
-                          ),
-                            child: const Center(
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  ' Card3',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Padding(padding: EdgeInsets.all(20.0),),
-                          const Text('My payments',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
-                          const Text('%',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold )),
-                          const Padding(padding: EdgeInsets.all(20.0),),
-                          const Text('Transactions',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
-                          const Text('%%%%',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold )),
-                          const Padding(padding: EdgeInsets.all(20.0),),
-                          const Text('Add Card',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold )),
-                          const Padding(padding: EdgeInsets.all(10.0),),
-                            GestureDetector(
-                              onTap: () {
-                                showAlertDialog(context);
-                              },
 
-                              child: const Text("Delete Card",
-                                style:
-                                TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.pink),),
-                            ),
-                        ],
-                      ),
+                        const Padding(padding: EdgeInsets.all(20.0),),
+                        const Text('Recent Transactions',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
+
+                        const Padding(padding: EdgeInsets.all(80.0),),
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const AddCardsScreen()));
+                            },
+                            child:const Text('Add Card',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ))),
+                        const Padding(padding: EdgeInsets.all(10.0),),
+                        GestureDetector(
+                          onTap: () {
+                            showAlertDialog(context);
+                          },
+
+                          child: const Text("Delete Card",
+                            style:
+                            TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.pink),),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -147,7 +96,7 @@ class _CardsScreenState extends State<CardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),

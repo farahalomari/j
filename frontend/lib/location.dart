@@ -1,20 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:gradproj7/route.dart';
 import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
 import 'package:geocoding/geocoding.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Location Screen ",
-      home: LocationScreen(),
-    ),
-  );
-}
+import 'destination.dart';
+import 'live.dart';
+
+
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -24,34 +16,47 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-
   String? _currentAddress;
   Position? _currentPosition;
+  final TextEditingController _destinationController = TextEditingController();
+  String ? _output;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        appBar: AppBar(title: const Text('Location Screen'),),
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-
             Expanded(
-
               child: Container(
                 width: double.infinity,
                 alignment: Alignment.topLeft,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 223, 218, 230),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
                 ),
-
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
@@ -59,46 +64,26 @@ class _LocationScreenState extends State<LocationScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          Text('ADDRESS: ${_currentAddress ?? ""}',
-                            style: const TextStyle(color: Colors.black,fontSize: 20,fontWeight:FontWeight.bold,fontStyle: FontStyle.italic),
-                          ),
-                          const Padding(padding: EdgeInsets.all(10)),
-                          ElevatedButton(onPressed: _getCurrentPosition,style: ElevatedButton.styleFrom(
-                            shape:RoundedRectangleBorder (borderRadius: BorderRadius.circular(20)),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
-                            textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,color:Colors.white,fontSize: 15),),
-                              child:
-                              RichText(
-                                text: const TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: Icon(Icons.location_on, color: Colors.pink,),
-                                    ),
-                                    TextSpan(
-                                        text: " Click here to find your current location ",
-                                    ),
-                                  ],
-                                ),
+                          GestureDetector( onDoubleTap: () {
+                            showAlertDialog(context);
+                          },
+                            child:Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white,
                               ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.black,
-                            ),
-                            child: const TextField(
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                prefixIcon: Icon(
-                                  Icons.location_searching,
-                                  color: Colors.pink,
+                              child:  TextField(
+                                style: const TextStyle(color: Colors.black),
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  prefixIcon: const Icon(
+                                    Icons.location_searching,
+                                    color: Colors.blue,
+                                  ),
+                                  hintText: 'Your location: ${_currentAddress ?? ""}',
+                                  hintStyle: const TextStyle(color: Colors.black),
                                 ),
-                                hintText: 'Your location',
-                                hintStyle: TextStyle(color: Colors.white),
                               ),
                             ),
                           ),
@@ -106,30 +91,36 @@ class _LocationScreenState extends State<LocationScreen> {
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
-                                color: Colors.black
-                            ),
-                            child: const TextField(
-                              style: TextStyle(color: Colors.white),
-                              decoration: InputDecoration(
+                                color: Colors.white),
+                            child:   TextField(
+                              controller: _destinationController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration:   const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
-                                  Icons.location_on,
-                                  color: Colors.pink,
+                                  Icons.location_on_sharp,
+                                  color: Colors.red,
                                 ),
-                                hintText: 'Where to ?',
-                                hintStyle: TextStyle(color: Colors.white),
+                                hintText: 'Where to ? ',
+                                hintStyle: TextStyle(color: Colors.black),
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          const Text('Saved places',
-                              style: TextStyle(fontWeight: FontWeight.bold,
-                                  fontSize: 35,
-                                  color: Colors.pink)
-                          ),
 
+                          const Divider(
+                            height: 70,
+                            color: Colors.grey,
+                            thickness: 1,
+
+                          ),
+                          const Text('Saved places',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 35,
+                                  color: Colors.purple)),
                           const Padding(
-                            padding: EdgeInsets.only(top: 5),),
+                            padding: EdgeInsets.only(top: 0,bottom:30),
+                          ),
                           RichText(
                             text: const TextSpan(
                               children: [
@@ -137,16 +128,25 @@ class _LocationScreenState extends State<LocationScreen> {
                                   child: Icon(Icons.home, size: 30),
                                 ),
                                 TextSpan(
-                                  text: " Home",style: TextStyle(fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black)
-                                ),
+                                    text: " Home",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.black)),
                               ],
                             ),
                           ),
+
                           const Padding(
-                            padding: EdgeInsets.only(top: 40),),
+                            padding: EdgeInsets.only(top: 10,bottom:0),
+                          ),
+                          const Divider(
+                            height: 30,
+                            color: Colors.grey,
+                            thickness: 1,
+
+                          ),
                           RichText(
                             text: const TextSpan(
                               children: [
@@ -154,22 +154,28 @@ class _LocationScreenState extends State<LocationScreen> {
                                   child: Icon(Icons.work, size: 30),
                                 ),
                                 TextSpan(
-                                    text: " Work",style: TextStyle(fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black)
-                                ),
+                                    text: " Work",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.black)),
                               ],
                             ),
                           ),
+                          const Divider(
+                            height: 70,
+                            color: Colors.grey,
+                            thickness: 5,
 
+                          ),
                           const Padding(
-                            padding: EdgeInsets.only(top: 20),
+                            padding: EdgeInsets.only(top: 0,bottom:1),
                             child: Text('Recent',
-                                style: TextStyle(fontWeight: FontWeight.bold,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 35,
-                                    color: Colors.pink)
-                            ),
+                                    color: Colors.purple)),
                           ),
                           const Padding(
                             padding: EdgeInsets.only(top: 15),
@@ -178,7 +184,6 @@ class _LocationScreenState extends State<LocationScreen> {
                               color: Colors.black,
                               size: 30,
                             ),
-
                           ),
                           const Padding(
                             padding: EdgeInsets.only(top: 50),
@@ -187,7 +192,6 @@ class _LocationScreenState extends State<LocationScreen> {
                               color: Colors.black,
                               size: 30,
                             ),
-
                           ),
                           const Padding(
                             padding: EdgeInsets.only(top: 50),
@@ -196,26 +200,33 @@ class _LocationScreenState extends State<LocationScreen> {
                               color: Colors.black,
                               size: 30,
                             ),
-
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(context,
+                              locationFromAddress(_destinationController.text)
+                                  .then((locations) {
+                                var output = 'No results found.';
+                                if (locations.isNotEmpty) {
+                                  output = locations[0].toString();
+                                }
+                                setState(() {
+                                  _output = output;
+                                });
+                              });
+                              Navigator.push(
+                                  context,
                                   MaterialPageRoute(
-                                      builder: (context) => const MapScreen()));
+                                      builder: (context) => const Destination()));
                             },
-                          child: const Align(
-                            alignment: Alignment.bottomRight,
-                          child:Icon(
-                                    Icons.double_arrow_rounded,
-                                    color: Colors.pink,
-                                    size: 40,
+                            child:   const Align(
+                                alignment: Alignment.bottomRight,
+                                child: Text('Done',style: TextStyle(fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Colors.purple),)
+                            ),
                           ),
-
-                                  ),),
                         ],
-                      )
-                  ),
+                      )),
                 ),
               ),
             ),
@@ -232,9 +243,10 @@ class _LocationScreenState extends State<LocationScreen> {
           destinations: <Widget>[
             GestureDetector(
               onDoubleTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                    context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.home),
@@ -243,7 +255,8 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
             GestureDetector(
               onDoubleTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                    context,
                     MaterialPageRoute(
                         builder: (context) => const LocationScreen()));
               },
@@ -254,7 +267,8 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
             GestureDetector(
               onDoubleTap: () {
-                Navigator.push(context,
+                Navigator.push(
+                    context,
                     MaterialPageRoute(
                         builder: (context) => const SettingsScreen()));
               },
@@ -264,36 +278,31 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
             ),
           ],
-
         ),
       ),
     );
   }
-
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+      _showSnackBar(
+          'Location services are disabled. Please enable the services');
       return false;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
+        _showSnackBar('Location permissions are denied');
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
+      _showSnackBar(
+          'Location permissions are permanently denied, we cannot request permissions.');
       return false;
     }
     return true;
@@ -309,15 +318,36 @@ class _LocationScreenState extends State<LocationScreen> {
 
   Future<void> _getAddressFromLatLng(Position position) async {
     try {
-      List <Placemark> placemarks = await placemarkFromCoordinates(
+      List<Placemark> placemarks = await placemarkFromCoordinates(
           _currentPosition!.latitude, _currentPosition!.longitude);
       Placemark place = placemarks[0];
       setState(() {
         _currentAddress = "${place.locality},${place.country},${place.street}";
       });
     } catch (e) {
-      print(e);
+      //print(e);
     }
   }
 
+  void _showSnackBar(String message) {
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)));
+    }
+  }
 }
+
+
+class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Map')),
+      body: const Center(child: Text('Map Screen')),
+    );
+  }
+}
+
+

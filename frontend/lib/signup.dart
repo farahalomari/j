@@ -1,53 +1,78 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gradproj7/location.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
-import 'package:gradproj7/settings.dart';
+import 'package:flutter/gestures.dart';
+import 'dart:async';
+import 'package:postgres/postgres.dart';
+import 'package:flutter/widgets.dart';
+import 'package:path/path.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Sign up screen ",
-      home: SignupScreen(),
-    ),
-  );
-}
 
-class TextSection extends StatelessWidget {
-  const TextSection({
-    super.key,
-    required this.description,
-  });
 
-  final String description;
+
+class Signup extends StatelessWidget {
+  const Signup({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Text(
-        description,
-        softWrap: true,
-        style: const TextStyle(
-            fontSize: 20,
-            //color: Color.fromRGBO(164, 0, 82, 10),
-            color: Colors.black,
-            fontWeight: FontWeight.bold),
+    return MaterialApp(
+      title: 'Sign Up',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple),
+          ),
+        ),
       ),
+      home: const SignupScreen(),
     );
   }
 }
 
+// class TextSection extends StatelessWidget {
+//   const TextSection({
+//     super.key,
+//     required this.description,
+//   });
+
+//   final String description;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(top: 10),
+//       child: Text(
+//         description,
+//         softWrap: true,
+//         style: const TextStyle(
+//             fontSize: 20,
+//             //color: Color.fromRGBO(164, 0, 82, 10),
+//             color: Color.fromARGB(255, 16, 3, 201),
+//             fontWeight: FontWeight.bold),
+//       ),
+//     );
+//   }
+// } //text
+
+
+
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
 
+
+
   @override
   State<SignupScreen> createState() => _SignupScreenState();
+
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
+
+
+
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -80,7 +105,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _passErrorText = 'Enter a valid password';
+        _passErrorText = 'Enter a valid password, must be at least 8 characters long and include at least one letter, one number, and one special character';
       });
       return false;
     } else {
@@ -91,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isPassValid(String pass) {
     //Minimum eight characters, at least one letter, one number and one special character:
     return RegExp(
-            r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+            r'^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$')
         .hasMatch(pass);
   }
 
@@ -116,14 +141,17 @@ class _SignupScreenState extends State<SignupScreen> {
     // It should be followed by Country code and National number.
     // It may contain white spaces or a hyphen ( – ).
     // the length of phone numbers may vary from 7 digits to 15 digits.
-    return RegExp(r' [+][0-9\-]\s?{6, 15}[0-9]$').hasMatch(phone);
+    return RegExp(r'07(78|77|79)\d{7}').hasMatch(phone);
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        appBar: AppBar(title: const Text('Signup screen'),),
+        backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
             const TitleSection(
@@ -133,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 223, 218, 230),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -142,145 +170,162 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: SingleChildScrollView(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        controller: _phoneController,
-                        style: const TextStyle(color: Colors.black),
-                        keyboardType: TextInputType.phone,
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'Enter your phone number',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          errorText: _phoneErrorText,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          controller: _phoneController,
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'Phone number',
+                            labelStyle: const TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            errorText: _phoneErrorText,
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 33, 216, 54)),
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
                           ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Enter your phone number';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          // Add more validation logic if needed
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      // Password Field
-                      TextFormField(
+                        const SizedBox(height: 16),
+                        // Password Field
+                        TextFormField(
                           controller: _passController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
                             labelText: 'Enter your password',
-                          labelStyle: const TextStyle(color: Colors.black),
+                            labelStyle: const TextStyle(
+                                color: Colors.black, fontSize: 16),
                             errorText: _passErrorText,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
                             ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
                             }
-                            // Add more validation logic if needed
                             return null;
                           },
                           obscureText: true, // Hides the password input
-                      ),
-                      const SizedBox(height: 16),
-                      // Confirm Password Field
-                      TextFormField(
-                        controller: _confirmController,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(),
-                          labelText: 'Confirm your password',
-                          labelStyle: const TextStyle(color: Colors.black),
-                          errorText: _confirmErrorText,
-                          focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please confirm your password';
-                          }
-                          if (value != _passController.text) {
-                            return 'Passwords do not match';
-                          }
-                          return null;
-                        },
-                        obscureText: true, // Hides the password input
-                      ),
-                      const SizedBox(height: 35),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () => {
-                            if (_validatePass(_passErrorText) == false &&
-                                _validatePass(_phoneErrorText) == false &&
+                        const SizedBox(height: 16),
+                        // Confirm Password Field
+                        TextFormField(
+                          controller: _confirmController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            border: const UnderlineInputBorder(),
+                            labelText: 'Confirm your password',
+                            labelStyle: const TextStyle(
+                                color: Colors.black, fontSize: 16),
+                            errorText: _confirmErrorText,
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.purple),
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please confirm your password';
+                            }
+                            if (value != _passController.text) {
+                              return 'Passwords do not match';
+                            }
+                            return null;
+                          },
+                          obscureText: true, // Hides the password input
+                        ),
+                        const SizedBox(height: 35),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_validatePass(_passController.text) == false ||
+                                  _validatePhone(_phoneController.text) == false ||
+                                  _validateConfirm(
+                                      _confirmController.text, _passController.text) ==
+                                      false) {
+                                _validatePass(_passController.text);
+                                _validatePhone(_phoneController.text);
                                 _validateConfirm(
-                                        _confirmErrorText, _passErrorText) ==
-                                    false)
-                              {
-                                _validatePass(_passErrorText),
-                                _validatePhone(_phoneErrorText),
-                                _validateConfirm(
-                                    _confirmErrorText, _passErrorText)
-                              }
-                            else
-                              {
+                                    _confirmController.text, _passController.text);
+                              }else {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            const OTPScreen())),
+                                        builder: (
+                                            context) => const OTPScreen()),
+                                  );
                               }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            backgroundColor: Colors.pink,
-                            foregroundColor: Colors.white,
-                            textStyle: const TextStyle(
-                                fontSize: 30,
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              backgroundColor: Colors.pink,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 40, vertical: 16),
+                              foregroundColor: Colors.white,
+                              textStyle: const TextStyle(
+                                fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                color: Colors.black),
-                          ),
-                          child: const Text('Sign up'),
-                        ),
-                      ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 10),
-                        child: Text("Already have an account?",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                color: Colors.black)),
+                                color: Colors.white,
+                              ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
-                              },
-                              child: const TextSection(
-                          description: "Log-in !",
+                            child: const Text('Sign up'),
+                          ),
                         ),
-                      ),
-                    ],
-                  )),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: RichText(
+                            text: TextSpan(
+                              text: "Already have an account? ",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "Log in",
+                                  style: const TextStyle(
+                                    color: Colors.purple,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LoginScreen(),
+                                        ),
+                                      );
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -302,7 +347,7 @@ class TitleSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(32),
+      padding: const EdgeInsets.fromLTRB(32, 70, 32, 16),
       child: Row(
         children: [
           Expanded(
@@ -327,3 +372,5 @@ class TitleSection extends StatelessWidget {
     );
   }
 }
+
+

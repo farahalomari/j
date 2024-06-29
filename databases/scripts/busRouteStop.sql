@@ -12,19 +12,21 @@ END $$;
 
 -- DROP TABLE IF EXISTS "busNetwork"."busRouteStop";
 
-CREATE TABLE IF NOT EXISTS "busNetwork"."busRouteStop" (
-    "routeID" character varying(100) COLLATE "C" NOT NULL,
-    "stopID" character varying(100) COLLATE "C" NOT NULL,
+CREATE TABLE IF NOT EXISTS "busNetwork"."busRouteStop"
+(
+    "routeID" character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    "stopID" character varying(100) COLLATE pg_catalog."default" NOT NULL,
     "stopOrder" integer,
     CONSTRAINT "busRouteStop_pkey" PRIMARY KEY ("routeID", "stopID"),
-    CONSTRAINT "fk_route" FOREIGN KEY ("routeID")
-        REFERENCES "busNetwork"."routes" ("routeID") MATCH SIMPLE
+    CONSTRAINT fk_route FOREIGN KEY ("routeID")
+        REFERENCES "busNetwork".routes ("routeID") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION,
-    CONSTRAINT "fk_stop" FOREIGN KEY ("stopID")
-        REFERENCES "busNetwork"."busStops" ("stopID") MATCH SIMPLE
+    CONSTRAINT fk_stop FOREIGN KEY ("stopID")
+        REFERENCES "busNetwork".stopsgeojson ("stopID") MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
+        NOT VALID
 );
 
 
