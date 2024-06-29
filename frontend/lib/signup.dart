@@ -272,23 +272,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                 _validateConfirm(
                                     _confirmController.text, _passController.text);
                               }else {
-                                final conn = await Connection.open(Endpoint(
-                                  host: 'localhost',
-                                  database: 'postgres',
-                                  username: 'postgres',
-                                  password: 'queenofgames',
-                                  port: 5432,
-
-                                ));
-
-                                conn.execute(
-                                  'INSERT INTO user (phoneNumber) VALUES ($_phoneController)',
-                                );
-                                conn.execute(
-                                  'INSERT INTO user (password) VALUES ($_passController)',
-                                );
-                                conn.close();
-
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

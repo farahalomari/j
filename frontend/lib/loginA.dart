@@ -177,27 +177,12 @@ class _LoginAScreenState extends State<LoginAScreen> {
                                 _validatePass(_passController.text);
                                 _validatePhone(_phoneController.text);
                               } else {
-                                final conn = await Connection.open(Endpoint(
-                                  host: 'localhost',
-                                  database: 'postgres',
-                                  username: 'postgres',
-                                  password: 'queenofgames',
-                                ));
-
-                                final result2 = await conn.execute(
-                                  Sql.named(
-                                      'SELECT * FROM user WHERE PhoneNumber=$_phoneController AND passwrod = $_passController'),
-                                );
-                                conn.close();
-
-                                if (result2.isNotEmpty) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (
                                             context) => const PermissionA()),
                                   );
-                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
