@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "route53",
+"features": [
+{ "type": "Feature", "properties": { "routeID": "53OUT", "routeName": "53", "startPoint": "", "endPoint": "" }, "geometry": null },
+{ "type": "Feature", "properties": { "routeID": "53IN", "routeName": "53", "startPoint": "", "endPoint": "" }, "geometry": null }
+]
+}

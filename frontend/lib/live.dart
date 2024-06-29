@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:gradproj7/settings.dart';
-
 import 'location.dart';
+import 'package:webview_flutter/webview_flutter.dart'; // Import WebView
+import 'package:iamport_webview_flutter/iamport_webview_flutter.dart'; // Use the iamport_webview_flutter package
+import 'dart:io';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
@@ -30,87 +33,109 @@ class _PermissionState extends State<Permission> {
       NavigationDestinationLabelBehavior.alwaysShow;
 
   @override
+  void initState() {
+    super.initState();
+    // Enable hybrid composition for Android
+
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return   SafeArea(
+    return SafeArea(
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
-        body: Column(children: [
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              alignment: Alignment.topLeft,
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 223, 218, 230),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.topLeft,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 223, 218, 230),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
+                  ),
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children:[GestureDetector( onDoubleTap: () {
-                      _getCurrentPosition();
-                    },
-                      child:Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
-                        ),
-                        child: const TextField(
-                          style: TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon: Icon(
-                              Icons.location_searching,
-                              color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onDoubleTap: () {
+                            _getCurrentPosition();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
                             ),
-                            hintText:'Your location',
-                            hintStyle: TextStyle(color: Colors.black),
-                          ),
-
-                        ),
-                      ),
-                    ),
-                      const Padding(padding: EdgeInsets.only(top:15)),
-                      GestureDetector( onDoubleTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (context) => const LocationScreen()));
-                      },
-                        child:Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                          ),
-                          child: const TextField(
-                            style: TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon: Icon(
-                                Icons.location_on_sharp,
-                                color: Colors.red,
+                            child: const TextField(
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.location_searching,
+                                  color: Colors.blue,
+                                ),
+                                hintText: 'Your location',
+                                hintStyle: TextStyle(color: Colors.black),
                               ),
-                              hintText: 'Where to ?',
-                              hintStyle: TextStyle(color: Colors.black),
                             ),
-
                           ),
                         ),
-                      ),
-                      const Padding(padding: EdgeInsets.all(20)),
-                      Align(alignment: Alignment.centerLeft,
-                        child:Text('ADDRESS: ${_currentAddress ?? ""}'),
-                      ),
-                    ],
-                    //Here should be the Map
+                        const Padding(padding: EdgeInsets.only(top: 15)),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LocationScreen()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                            ),
+                            child: const TextField(
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.location_on_sharp,
+                                  color: Colors.red,
+                                ),
+                                hintText: 'Where to ?',
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(20)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text('ADDRESS: ${_currentAddress ?? ""}'),
+                        ),
+                        // Add the WebView here
+                        const SizedBox(
+                          height: 400, // Set a height for the WebView
+                          child: WebView(
+                            initialUrl:
+                                'assets/web/index.html', // Path to your HTML file
+                            javascriptMode: JavascriptMode.unrestricted,
+                          ),
+                        ),
+                      ],
+                      //Here should be the Map
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
         ),
         bottomNavigationBar: NavigationBar(
           labelBehavior: labelBehavior,
@@ -212,8 +237,8 @@ class _PermissionState extends State<Permission> {
 
   void _showSnackBar(String message) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 }
