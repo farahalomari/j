@@ -5,12 +5,10 @@ import 'package:postgres/postgres.dart';
 import 'loginA.dart';
 import 'otpA.dart';
 
-void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+class Signupa extends StatelessWidget {
+  const Signupa({super.key});
 
   @override
   Widget build(BuildContext context) {

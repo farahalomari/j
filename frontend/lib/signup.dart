@@ -9,16 +9,10 @@ import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 
 
-void main() async{
 
 
-
-  runApp(const MyApp());
-}
-
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Signup extends StatelessWidget {
+  const Signup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Signup screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

@@ -3,16 +3,7 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'dart:async';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "OTPA screen ",
-      home: OTPAScreen(),
-    ),
-  );
-}
+
 class OTPAScreen extends StatefulWidget {
   const OTPAScreen({super.key});
 
@@ -65,6 +56,7 @@ class _OTPAScreenState extends State<OTPAScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('OTP screen'),),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cleaning_services),
         onPressed: () {

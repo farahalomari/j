@@ -6,16 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'destination.dart';
 import 'live.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Location Screen ",
-      home: LocationScreen(),
-    ),
-  );
-}
+
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -51,6 +42,7 @@ class _LocationScreenState extends State<LocationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Location Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

@@ -5,16 +5,7 @@ import 'cardsA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "SettingsA screen ",
-      home: SettingsAScreen(),
-    ),
-  );
-}
+
 class SettingsAScreen extends StatefulWidget {
   const SettingsAScreen({super.key});
 
@@ -97,6 +88,7 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Settings screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

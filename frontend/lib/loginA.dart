@@ -6,16 +6,7 @@ import 'signupA.dart';
 import 'liveA.dart';
 import 'otpA.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "LoginA Screen",
-      home: LoginAScreen(),
-    ),
-  );
-}
+
 
 
 
@@ -64,6 +55,7 @@ class _LoginAScreenState extends State<LoginAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Login Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

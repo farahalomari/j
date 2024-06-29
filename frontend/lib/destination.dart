@@ -5,16 +5,7 @@ import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 
 import 'live.dart';
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Destination",
-      home: Destination(),
-    ),
-  );
-}
+
 
 
 
@@ -61,6 +52,7 @@ class _DestinationState extends State<Destination> {
   Widget build(BuildContext context) {
     return   SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Destination'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(children: [
           GestureDetector( onDoubleTap: () {

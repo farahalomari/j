@@ -3,16 +3,7 @@ import 'package:gradproj7/location.dart';
 import 'package:gradproj7/settings.dart';
 import 'live.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Add Card Screen ",
-      home: AddCardsScreen(),
-    ),
-  );
-}
+
 class AddCardsScreen extends StatefulWidget {
   const AddCardsScreen({super.key});
 
@@ -96,6 +87,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Add Card Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

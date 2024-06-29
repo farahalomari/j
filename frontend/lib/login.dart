@@ -11,20 +11,6 @@ import 'package:gradproj7/otp.dart';
 import 'package:postgres/postgres.dart';
 
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Login Screen",
-      home: LoginScreen(),
-    ),
-  );
-}
-
-
-
-
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -69,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Login Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

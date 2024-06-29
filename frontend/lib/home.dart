@@ -11,12 +11,6 @@ import 'js_util.dart';
 //import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 
 
-
-
-void main() {
-  runApp(const MapScreen());
-}
-
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 

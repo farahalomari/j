@@ -5,16 +5,7 @@ import 'settingsA.dart';
 import 'destinationA.dart';
 import 'liveA.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "LocationA Screen ",
-      home: LocationAScreen(),
-    ),
-  );
-}
+
 
 class LocationAScreen extends StatefulWidget {
   const LocationAScreen({super.key});
@@ -50,6 +41,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Location Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

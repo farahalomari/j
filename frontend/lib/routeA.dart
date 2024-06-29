@@ -8,16 +8,6 @@ import 'package:latlong2/latlong.dart' as lat_lng;
 //import 'dart:convert';
 //import 'dart:io';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Map screen ",
-      home: MapAScreen(),
-    ),
-  );
-}
 
 class MapAScreen extends StatefulWidget {
   const MapAScreen({super.key});
@@ -62,6 +52,7 @@ class _MapAScreenState extends State<MapAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Map screen'),),
         backgroundColor: Colors.white,
         body: FlutterMap(
           options: MapOptions(

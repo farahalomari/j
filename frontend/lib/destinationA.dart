@@ -5,16 +5,7 @@ import 'settingsA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "DestinationA",
-      home: DestinationA(),
-    ),
-  );
-}
+
 
 
 
@@ -62,6 +53,7 @@ class _DestinationAState extends State<DestinationA> {
   Widget build(BuildContext context) {
     return   SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Destination'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(children: [
           GestureDetector( onDoubleTap: () {

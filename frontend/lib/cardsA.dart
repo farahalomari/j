@@ -5,16 +5,7 @@ import 'addA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "CardA Screen ",
-      home: CardsAScreen(),
-    ),
-  );
-}
+
 class CardsAScreen extends StatefulWidget {
   const CardsAScreen({super.key});
 
@@ -30,6 +21,7 @@ class _CardsAScreenState extends State<CardsAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Card Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

@@ -4,16 +4,6 @@ import 'package:gradproj7/location.dart';
 import 'package:gradproj7/cards.dart';
 import 'package:postgres/postgres.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Settings screen ",
-      home: SettingsScreen(),
-    ),
-  );
-}
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -96,6 +86,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Settings screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

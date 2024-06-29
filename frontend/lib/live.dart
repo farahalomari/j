@@ -3,20 +3,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:gradproj7/settings.dart';
 import 'location.dart';
-import 'package:webview_flutter/webview_flutter.dart'; // Import WebView
+//import 'package:webview_flutter/webview_flutter.dart'; // Import WebView
 import 'package:iamport_webview_flutter/iamport_webview_flutter.dart'; // Use the iamport_webview_flutter package
 import 'dart:io';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(
-    const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "Permission ",
-      home: Permission(),
-    ),
-  );
-}
+
 
 class Permission extends StatefulWidget {
   const Permission({super.key});
@@ -37,13 +28,14 @@ class _PermissionState extends State<Permission> {
     super.initState();
     // Enable hybrid composition for Android
 
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    //if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: const Text('Permission'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
