@@ -182,21 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _validatePass(_passController.text);
                                 _validatePhone(_phoneController.text);
                               }  else {
-                                final conn = await Connection.open(Endpoint(
-                                  host: 'localhost',
-                                  database: 'postgres',
-                                  username: 'postgres',
-                                  password: 'queenofgames',
-                                  port: 5432,
 
-                                ));
-
-                                final result2 = await conn.execute(
-                                  Sql.named(
-                                      'SELECT * FROM user WHERE PhoneNumber=$_phoneController AND passwrod = $_passController'),
-                                );
-                                conn.close();
-                                if (result2.isNotEmpty) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -204,7 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                             context) => const Permission()),
                                   );
                                 }
-                              }
                             },
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
