@@ -1,24 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-//import 'package:flutter/widgets.dart';
-import 'login.dart';
-import 'otp.dart';
-
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import 'loginA.dart';
+import 'otpA.dart';
 
 
+
+class Signupa extends StatelessWidget {
+  const Signupa({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
-
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Sign Up',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        inputDecorationTheme: const InputDecorationTheme(
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.purple),
+          ),
+        ),
+      ),
+      home: const SignupAScreen(),
+    );
+  }
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+// class TextSection extends StatelessWidget {
+//   const TextSection({
+//     super.key,
+//     required this.description,
+//   });
 
+//   final String description;
 
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(top: 10),
+//       child: Text(
+//         description,
+//         softWrap: true,
+//         style: const TextStyle(
+//             fontSize: 20,
+//             //color: Color.fromRGBO(164, 0, 82, 10),
+//             color: Color.fromARGB(255, 16, 3, 201),
+//             fontWeight: FontWeight.bold),
+//       ),
+//     );
+//   }
+// } //text
 
+class SignupAScreen extends StatefulWidget {
+  const SignupAScreen({super.key});
 
+  @override
+  State<SignupAScreen> createState() => _SignupAScreenState();
+}
+
+class _SignupAScreenState extends State<SignupAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -32,11 +71,11 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _validateConfirm(String value1, String value2) {
     if (value1.isEmpty) {
       setState(() {
-        _confirmErrorText = 'required';
+        _confirmErrorText = 'مطلوب';
       });
       return false;
     } else if (value1.isNotEmpty && value1 != value2) {
-      _confirmErrorText = 'does not equal the value in password field';
+      _confirmErrorText = 'لا يساوي كلمة السر';
       return false;
     } else {
       return true;
@@ -46,12 +85,12 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _validatePass(String value) {
     if (value.isEmpty) {
       setState(() {
-        _passErrorText = 'Password is required';
+        _passErrorText = 'كلمة السر مطلوبة';
       });
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _passErrorText = 'Enter a valid password, must be at least 8 characters long and include at least one letter, one number, and one special character';
+        _passErrorText = 'ادخل كلمة سر صحيحة';
       });
       return false;
     } else {
@@ -62,19 +101,19 @@ class _SignupScreenState extends State<SignupScreen> {
   bool isPassValid(String pass) {
     //Minimum eight characters, at least one letter, one number and one special character:
     return RegExp(
-            r'^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$')
+        r'^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,}$')
         .hasMatch(pass);
   }
 
   bool _validatePhone(String value) {
     if (value.isEmpty) {
       setState(() {
-        _phoneErrorText = 'Phone is required';
+        _phoneErrorText = 'رقم الهاتف مطلوب';
       });
       return false;
-    } else if (value.isNotEmpty && !isPhoneValid(value)) {
+    } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _phoneErrorText = 'Enter a valid phone number';
+        _phoneErrorText = 'ادخل رقم هاتف صحيح';
       });
       return false;
     } else {
@@ -87,21 +126,18 @@ class _SignupScreenState extends State<SignupScreen> {
     // It should be followed by Country code and National number.
     // It may contain white spaces or a hyphen ( – ).
     // the length of phone numbers may vary from 7 digits to 15 digits.
-    return RegExp(r'07(78|77|79)\d{7}').hasMatch(phone);
+    return RegExp(r' [+][0-9-]\s?{6, 15}[0-9]$').hasMatch(phone);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
             const TitleSection(
-              name: 'Sign up to Jawla',
+              name: 'افتح حساب ',
             ),
             Expanded(
               child: Container(
@@ -125,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           keyboardType: TextInputType.phone,
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
-                            labelText: 'Phone number',
+                            labelText: 'رقم الهاتف',
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _phoneErrorText,
@@ -139,7 +175,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Enter your phone number';
+                              return 'ادخل رقم هاتفك';
                             }
                             return null;
                           },
@@ -151,7 +187,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
-                            labelText: 'Enter your password',
+                            labelText: 'ادخل كلمة سر',
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _passErrorText,
@@ -164,7 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
+                              return 'ادخل كلمة السر';
                             }
                             return null;
                           },
@@ -177,7 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             border: const UnderlineInputBorder(),
-                            labelText: 'Confirm your password',
+                            labelText: 'أكد على كلمة السر',
                             labelStyle: const TextStyle(
                                 color: Colors.black, fontSize: 16),
                             errorText: _confirmErrorText,
@@ -190,10 +226,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please confirm your password';
+                              return 'أكد كلمة السر';
                             }
                             if (value != _passController.text) {
-                              return 'Passwords do not match';
+                              return 'كلمات السر غير متساووين';
                             }
                             return null;
                           },
@@ -202,7 +238,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 35),
                         Center(
                           child: ElevatedButton(
-                            onPressed: () async {
+                            onPressed: () async{
                               if (_validatePass(_passController.text) == false ||
                                   _validatePhone(_phoneController.text) == false ||
                                   _validateConfirm(
@@ -212,13 +248,13 @@ class _SignupScreenState extends State<SignupScreen> {
                                 _validatePhone(_phoneController.text);
                                 _validateConfirm(
                                     _confirmController.text, _passController.text);
-                              }else {
+                              } else {
+
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (
-                                            context) => const OTPScreen()),
-                                  );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const OTPAScreen()),
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -234,14 +270,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                 color: Colors.white,
                               ),
                             ),
-                            child: const Text('Sign up'),
+                            child: const Text('افتح حساب'),
                           ),
                         ),
                         const SizedBox(height: 10),
                         Center(
                           child: RichText(
                             text: TextSpan(
-                              text: "Already have an account? ",
+                              text: "يوجد لك حساب ؟ ",
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -249,7 +285,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                               children: [
                                 TextSpan(
-                                  text: "Log in",
+                                  text: "تسجيل دخول",
                                   style: const TextStyle(
                                     color: Colors.purple,
                                     decoration: TextDecoration.underline,
@@ -260,7 +296,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
-                                              const LoginScreen(),
+                                          const LoginAScreen(),
                                         ),
                                       );
                                     },
@@ -318,5 +354,3 @@ class TitleSection extends StatelessWidget {
     );
   }
 }
-
-

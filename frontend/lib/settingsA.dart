@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'cards.dart';
-import 'live.dart';
-import 'location.dart';
+import 'package:gradproj7/settings.dart';
+import 'cardsA.dart';
+import 'liveA.dart';
+import 'locationA.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+
+class SettingsAScreen extends StatefulWidget {
+  const SettingsAScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<SettingsAScreen> createState() => _SettingsAScreenState();
 }
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsAScreenState extends State<SettingsAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -23,11 +25,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _validateConfirm(String value1, String value2) {
     if (value1.isEmpty) {
       setState(() {
-        _confirmErrorText = 'required';
+        _confirmErrorText = 'مطلوب';
       });
       return false;
     } else if (value1.isNotEmpty && value1 != value2) {
-      _confirmErrorText = 'does not equal the value in password field';
+      _confirmErrorText = 'ليس نفس كلمة السر';
       return false;
     } else {
       return true;
@@ -37,12 +39,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _validatePass(String value) {
     if (value.isEmpty) {
       setState(() {
-        _passErrorText = 'Password is required';
+        _passErrorText = 'كلمة السر مطلوبة';
       });
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _passErrorText = 'Enter a valid password of minimum 8 characters Minimum eight characters, at least one letter, one number and one special character';
+        _passErrorText = 'ادخل كلمة سر صحيحة';
       });
       return false;
     } else {
@@ -60,12 +62,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _validatePhone(String value) {
     if (value.isEmpty) {
       setState(() {
-        _phoneErrorText = 'Phone is required';
+        _phoneErrorText = 'رقم الهاتف مطلوب';
       });
       return false;
     } else if (value.isNotEmpty && !isPassValid(value)) {
       setState(() {
-        _phoneErrorText = 'Enter a valid phone number';
+        _phoneErrorText = 'ادخل رقم صحيح';
       });
       return false;
     } else {
@@ -78,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // It should be followed by Country code and National number.
     // It may contain white spaces or a hyphen ( – ).
     // the length of phone numbers may vary from 7 digits to 15 digits.
-    return RegExp(r'07(78|77|79)\d{7}').hasMatch(phone);
+    return RegExp(r' 07(78|77|79)\d{7}').hasMatch(phone);
   }
 
   @override
@@ -89,9 +91,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            const TitleSection(name: 'Profile Settings',
+            const Align(alignment: Alignment.topRight,
+            child:TitleSection(name: 'اعدادات الحساب',
             ),
-
+            ),
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -113,9 +116,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             keyboardType: TextInputType.name,
                             decoration: const InputDecoration(
                               border: UnderlineInputBorder(),
-                              labelText: 'New name',
+                              labelText: 'اسم جديد',
                               labelStyle: TextStyle(
-                                  color: Colors.black, fontSize: 16),
+                                  color: Colors.black, fontSize: 16,
+                              ),
+
                               focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color.fromARGB(255, 33, 216, 54)),
@@ -131,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             keyboardType: TextInputType.phone,
                             decoration: InputDecoration(
                               border: const UnderlineInputBorder(),
-                              labelText: 'New phone number',
+                              labelText: 'رقم هاتف جديد',
                               labelStyle: const TextStyle(
                                   color: Colors.black, fontSize: 16),
                               errorText: _phoneErrorText,
@@ -145,7 +150,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Enter your new phone number';
+                                return 'ادخل رقم هاتفك';
                               }
                               return null;
                             },
@@ -156,7 +161,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: const TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                               border: const UnderlineInputBorder(),
-                              labelText: 'Enter your new password',
+                              labelText: 'ادخل كلمة سر جديدة',
                               labelStyle: const TextStyle(
                                   color: Colors.black, fontSize: 16),
                               errorText: _passErrorText,
@@ -169,7 +174,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
+                                return 'ادخل كلمة سر';
                               }
                               return null;
                             },
@@ -181,7 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             style: const TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                               border: const UnderlineInputBorder(),
-                              labelText: 'Confirm your password',
+                              labelText: 'أكد كلمة السر',
                               labelStyle: const TextStyle(
                                   color: Colors.black, fontSize: 16),
                               errorText: _confirmErrorText,
@@ -194,10 +199,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please confirm your password';
+                                return 'اكد كلمة السر';
                               }
                               if (value != _passController.text) {
-                                return 'Passwords do not match';
+                                return 'كلمات السر لا يتساوون';
                               }
                               return null;
                             },
@@ -209,11 +214,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(
-                                      builder: (context) => const CardsScreen()));
+                                      builder: (context) => const CardsAScreen()));
                             },
-                            child:const Text("Manage Cards",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
+                            child:const Text("تعديل البطاقات",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
                           const Padding(padding: EdgeInsets.all(10),),
-                          const Text("Language",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),
+                          GestureDetector(
+                            onTap: () {
+                              showAlertDialog2(context);
+                            },
+                            child:const Text("اللغة",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
                           const Padding(padding: EdgeInsets.all(10),),
 
                           GestureDetector(
@@ -221,7 +230,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               showAlertDialog(context);
                             },
 
-                            child: const Text("Log out",
+                            child: const Text("تسجيل الخروج",
                               style:
                               TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.purple),),
                           ),
@@ -255,7 +264,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   color: Colors.white,
                                 ),
                               ),
-                              child: const Text('Save changes'),
+                              child: const Text('حفظ التغيرات'),
                             ),
                           ),
                         ],
@@ -279,7 +288,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const Permission()));
+                        builder: (context) => const PermissionA()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),
@@ -290,7 +299,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
+                        builder: (context) => const LocationAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.route),
@@ -301,7 +310,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
+                        builder: (context) => const SettingsAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.person),
@@ -342,6 +351,7 @@ class TitleSection extends StatelessWidget {
                       fontWeight: FontWeight.bold, fontSize: 30,
                       color: Colors.black87
                   ),
+                  textAlign: TextAlign.right,
 
                 ),
               ],
@@ -357,20 +367,55 @@ showAlertDialog(BuildContext context) {
 
   // set up the buttons
   Widget cancelButton = TextButton(
-    child: const Text("Cancel"),
+    child: const Text("لا"),
     onPressed:  () {Navigator.push(context,
         MaterialPageRoute(
-            builder: (context) => const SettingsScreen()));},
+            builder: (context) => const SettingsAScreen()));},
   );
   Widget continueButton = TextButton(
-    child: const Text("Continue"),
+    child: const Text("نعم"),
     onPressed:  () {},
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Logging out "),
-    content: const Text("Are you sure you want to log out ?"),
+    title: const Text("تسجيل الخروج "),
+    content: const Text("هل تريد تسجيل الخروج؟"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showAlertDialog2(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("لا"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsAScreen()));},
+  );
+  Widget continueButton = TextButton(
+    child: const Text("نعم"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsScreen()));},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("تغير اللفة "),
+    content: const Text("هل تريد تغير اللغة الى اللغة الانجليزية ؟"),
     actions: [
       cancelButton,
       continueButton,

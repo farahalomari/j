@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'settingsA.dart';
 import 'package:u_credit_card/u_credit_card.dart';
-import 'package:gradproj7/settings.dart';
-
-import 'Add.dart';
-import 'live.dart';
-import 'location.dart';
+import 'addA.dart';
+import 'liveA.dart';
+import 'locationA.dart';
 
 
-class CardsScreen extends StatefulWidget {
-  const CardsScreen({super.key});
+class CardsAScreen extends StatefulWidget {
+  const CardsAScreen({super.key});
 
   @override
-  State<CardsScreen> createState() => _CardsScreenState();
+  State<CardsAScreen> createState() => _CardsAScreenState();
 }
 
-class _CardsScreenState extends State<CardsScreen> {
+class _CardsAScreenState extends State<CardsAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -26,7 +25,7 @@ class _CardsScreenState extends State<CardsScreen> {
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            const TitleSection(name: 'Your cards'),
+            const TitleSection(name: 'بطاقاتك'),
             Expanded(
 
               child: Container(
@@ -55,23 +54,23 @@ class _CardsScreenState extends State<CardsScreen> {
                         ),
 
                         const Padding(padding: EdgeInsets.all(20.0),),
-                        const Text('Recent Transactions',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
+                        const Text('تحويلات سابقة',style: TextStyle(fontSize: 30,fontWeight:FontWeight.bold )),
 
                         const Padding(padding: EdgeInsets.all(80.0),),
                         GestureDetector(
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(
-                                      builder: (context) => const AddCardsScreen()));
+                                      builder: (context) => const AddCardsAScreen()));
                             },
-                            child:const Text('Add Card',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ))),
+                            child:const Text('اضف بطاقة',style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ))),
                         const Padding(padding: EdgeInsets.all(10.0),),
                         GestureDetector(
                           onTap: () {
                             showAlertDialog(context);
                           },
 
-                          child: const Text("Delete Card",
+                          child: const Text("مسح بطاقة",
                             style:
                             TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.pink),),
                         ),
@@ -96,7 +95,7 @@ class _CardsScreenState extends State<CardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const Permission()));
+                        builder: (context) => const PermissionA()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.home),
@@ -107,7 +106,7 @@ class _CardsScreenState extends State<CardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const LocationScreen()));
+                        builder: (context) => const LocationAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.route),
@@ -118,7 +117,7 @@ class _CardsScreenState extends State<CardsScreen> {
               onDoubleTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()));
+                        builder: (context) => const SettingsAScreen()));
               },
               child:const NavigationDestination(
                 icon: Icon(Icons.person),
@@ -171,23 +170,24 @@ class TitleSection extends StatelessWidget {
   }
 }
 showAlertDialog(BuildContext context) {
-
   // set up the buttons
   Widget cancelButton = TextButton(
-    child: const Text("Cancel"),
-    onPressed:  () {Navigator.push(context,
-        MaterialPageRoute(
-            builder: (context) => const CardsScreen()));},
+    child: const Text("لا"),
+    onPressed: () {
+      Navigator.push(context,
+          MaterialPageRoute(
+              builder: (context) => const CardsAScreen()));
+    },
   );
   Widget continueButton = TextButton(
-    child: const Text("Continue"),
-    onPressed:  () {},
+    child: const Text("نعم"),
+    onPressed: () {},
   );
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: const Text("Deleting card "),
-    content: const Text("Are you sure you want to delete this card ?"),
+    title: const Text("مسح البطاقة "),
+    content: const Text("هل تريد مسح البطاقة؟"),
     actions: [
       cancelButton,
       continueButton,

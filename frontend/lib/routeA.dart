@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart' as lat_lng;
 import 'package:gradproj7/settings.dart';
-import 'package:gradproj7/signup.dart';
 
+import 'live.dart';
 import 'location.dart';
 //import 'dart:convert';
 //import 'dart:io';
 
 
-class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+class MapAScreen extends StatefulWidget {
+  const MapAScreen({super.key});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<MapAScreen> createState() => _MapAScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapAScreenState extends State<MapAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
-  //Position? _currentPosition;
+ // Position? _currentPosition;
   double? l1;
   double? l2;
 
@@ -63,7 +63,7 @@ class _MapScreenState extends State<MapScreen> {
           children: [
             TileLayer(
               urlTemplate:
-                  'https://www.openstreetmap.org/#map=15/31.9568/35.9168&layers=T',
+              'https://www.openstreetmap.org/#map=15/31.9568/35.9168&layers=T',
               // map box URl
               // 'https://api.mapbox.com/styles/v1/juliagreen/clv2ok0mt00cs01qzdkqs2cfc/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoianVsaWFncmVlbiIsImEiOiJjbHYyb2dwdTQwYzhzMmtvN3JtY2l3ejBlIn0.Y3mES-JsXhTpyPmI3O8dpQ',
               //access token of mapbox map
@@ -89,7 +89,7 @@ class _MapScreenState extends State<MapScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SignupScreen()));
+                        builder: (context) => const Permission()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.home),
