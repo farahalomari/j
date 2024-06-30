@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:gradproj7/api_handler.dart';
 import 'package:gradproj7/login.dart';
 import 'package:gradproj7/otp.dart';
 import 'package:flutter/gestures.dart';
@@ -7,6 +8,8 @@ import 'dart:async';
 import 'package:postgres/postgres.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
+
+import 'models/model.dart';
 
 
 
@@ -70,7 +73,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
 
-
+ApiHandler apiHandler = ApiHandler();
 
 
   int currentPageIndex = 0;
@@ -83,7 +86,18 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _confirmController = TextEditingController();
   late String _confirmErrorText = "";
 
-  bool _validateConfirm(String value1, String value2) {
+void addUser() async{
+  final user = User(
+    userID: 0,
+    phoneNumber: _phoneController.text,
+    password: _passController.text,
+  );
+  await apiHandler.addUser(user: user);
+}
+
+
+
+bool _validateConfirm(String value1, String value2) {
     if (value1.isEmpty) {
       setState(() {
         _confirmErrorText = 'required';
@@ -267,6 +281,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 _validateConfirm(
                                     _confirmController.text, _passController.text);
                               }else {
+                                addUser();
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

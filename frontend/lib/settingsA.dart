@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gradproj7/loginA.dart';
 import 'package:gradproj7/settings.dart';
-import 'package:postgres/postgres.dart';
+import 'api_handler.dart';
 import 'cardsA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
+import 'models/model.dart';
 
 
 class SettingsAScreen extends StatefulWidget {
@@ -13,6 +15,12 @@ class SettingsAScreen extends StatefulWidget {
   State<SettingsAScreen> createState() => _SettingsAScreenState();
 }
 class _SettingsAScreenState extends State<SettingsAScreen> {
+
+  ApiHandler apiHandler = ApiHandler();
+  late List<User> data =[];
+  int index = 0 ;
+
+
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -22,6 +30,25 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
   late String _phoneErrorText = "";
   final TextEditingController _confirmController = TextEditingController();
   late String _confirmErrorText = "";
+
+
+  void addUser() async{
+    final user = User(
+      userID: 0,
+      phoneNumber: _phoneController.text,
+      password: _passController.text,
+    );
+    await apiHandler.addUser(user: user);
+  }
+
+  void deleteUser(int userID) async{
+
+    await apiHandler.deleteUser(userID: userID );
+    setState(() {
+
+    });
+  }
+
 
   bool _validateConfirm(String value1, String value2) {
     if (value1.isEmpty) {
@@ -66,7 +93,7 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
         _phoneErrorText = 'رقم الهاتف مطلوب';
       });
       return false;
-    } else if (value.isNotEmpty && !isPassValid(value)) {
+    } else if (value.isNotEmpty && !isPhoneValid(value)) {
       setState(() {
         _phoneErrorText = 'ادخل رقم صحيح';
       });
@@ -225,7 +252,15 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                             },
                             child:const Text("اللغة",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
                           const Padding(padding: EdgeInsets.all(10),),
+                          GestureDetector(
+                            onTap: () {
+                              deleteUser(data[index].userID);
+                            },
 
+                            child: const Text("حذف الحساب ",
+                              style:
+                              TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.purple),),
+                          ),
                           GestureDetector(
                             onTap: () {
                               showAlertDialog(context);
@@ -249,6 +284,15 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                                   _validatePhone(_phoneController.text);
                                   _validateConfirm(
                                       _confirmController.text, _passController.text);
+                                }
+                                else{
+                                  addUser();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => const LoginAScreen()),
+                                  );
                                 }
 
                               },

@@ -113,7 +113,7 @@ class _SignupAScreenState extends State<SignupAScreen> {
         _phoneErrorText = 'رقم الهاتف مطلوب';
       });
       return false;
-    } else if (value.isNotEmpty && !isPassValid(value)) {
+    } else if (value.isNotEmpty && !isPhoneValid(value)) {
       setState(() {
         _phoneErrorText = 'ادخل رقم هاتف صحيح';
       });

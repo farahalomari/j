@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gradproj7/live.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/cards.dart';
+import 'package:gradproj7/login.dart';
 import 'package:postgres/postgres.dart';
+
+import 'api_handler.dart';
+import 'models/model.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -11,6 +15,9 @@ class SettingsScreen extends StatefulWidget {
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 class _SettingsScreenState extends State<SettingsScreen> {
+
+  ApiHandler apiHandler = ApiHandler();
+
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -20,6 +27,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _phoneErrorText = "";
   final TextEditingController _confirmController = TextEditingController();
   late String _confirmErrorText = "";
+
+  late List<User> data =[];
+  int index = 0 ;
+
+  void addUser() async{
+    final user = User(
+      userID: 0,
+      phoneNumber: _phoneController.text,
+      password: _passController.text,
+    );
+    await apiHandler.addUser(user: user);
+  }
+
+  void deleteUser(int userID) async{
+
+   await apiHandler.deleteUser(userID: userID );
+   setState(() {
+
+   });
+  }
+
 
   bool _validateConfirm(String value1, String value2) {
     if (value1.isEmpty) {
@@ -64,7 +92,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _phoneErrorText = 'Phone is required';
       });
       return false;
-    } else if (value.isNotEmpty && !isPassValid(value)) {
+    } else if (value.isNotEmpty && !isPhoneValid(value)) {
       setState(() {
         _phoneErrorText = 'Enter a valid phone number';
       });
@@ -216,6 +244,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           const Padding(padding: EdgeInsets.all(10),),
                           const Text("Language",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),
                           const Padding(padding: EdgeInsets.all(10),),
+                          GestureDetector(
+                            onTap: () {
+                                  deleteUser(data[index].userID);
+                                },
+
+                            child: const Text("Delete user ",
+                              style:
+                              TextStyle(fontSize: 20,fontWeight:FontWeight.bold ,color:Colors.purple),),
+                          ),
 
                           GestureDetector(
                             onTap: () {
@@ -240,6 +277,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   _validatePhone(_phoneController.text);
                                   _validateConfirm(
                                       _confirmController.text, _passController.text);
+                                }
+                                else{
+                                  addUser();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => const LoginScreen()),
+                                  );
                                 }
 
                               },
@@ -386,3 +432,4 @@ showAlertDialog(BuildContext context) {
     },
   );
 }
+

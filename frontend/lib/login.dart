@@ -1,14 +1,11 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:gradproj7/home.dart' as home; // Importing home.dart with prefix 'home'
 import 'package:gradproj7/live.dart';
-import 'package:gradproj7/location.dart' as location; // Importing location.dart with prefix 'location'
-import 'package:gradproj7/settings.dart';
 import 'package:gradproj7/signup.dart';
 import 'package:gradproj7/otp.dart';
-import 'package:postgres/postgres.dart';
+
+import 'api_handler.dart';
+import 'models/model.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -19,13 +16,35 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late List<User> data =[];
+  ApiHandler apiHandler = ApiHandler();
+
+
+  @override
+  void initState() {
+    index+=1;
+    getData();
+    super.initState();
+  }
+
+  void forgetPass(String phoneNumber) async{
+
+    await apiHandler.forgetPass(phoneNumber: phoneNumber);
+  }
+
+  void getData () async{
+    data = await apiHandler.getUserData();
+    setState(() {
+
+    });
+  }
+
   int currentPageIndex = 0;
-  NavigationDestinationLabelBehavior labelBehavior =
-      NavigationDestinationLabelBehavior.alwaysShow;
   final TextEditingController _passController = TextEditingController();
   late String _passErrorText = "";
   final TextEditingController _phoneController = TextEditingController();
   late  String _phoneErrorText = "";
+  int index=0;
 
   bool _validatePass(String value) {
     if (value.isEmpty) {
@@ -59,7 +78,8 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
-            Padding(padding: const EdgeInsets.only(top:60,bottom:40),
+
+    Padding(padding: const EdgeInsets.only(top:60,bottom:40),
               child: RichText(
                 text:  const TextSpan(
                   children: [
@@ -144,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          forgetPass(_phoneController.text);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -169,13 +190,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 _validatePass(_passController.text);
                                 _validatePhone(_phoneController.text);
                               }  else {
-
+                                if(data[index].phoneNumber==_phoneController.text && data[index].password==_passController.text) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (
                                             context) => const Permission()),
                                   );
+                                }
                                 }
                             },
                             style: ElevatedButton.styleFrom(

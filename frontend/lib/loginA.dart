@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:postgres/postgres.dart';
+import 'api_handler.dart';
+import 'models/model.dart';
 import 'signupA.dart';
 
 import 'liveA.dart';
@@ -14,11 +15,35 @@ import 'otpA.dart';
 class LoginAScreen extends StatefulWidget {
   const LoginAScreen({super.key});
 
+
+
   @override
   State<LoginAScreen> createState() => _LoginAScreenState();
 }
 
 class _LoginAScreenState extends State<LoginAScreen> {
+
+  late List<User> data =[];
+  ApiHandler apiHandler = ApiHandler();
+  int index=0;
+
+  @override
+  void initState() {
+    index+=1;
+    getData();
+    super.initState();
+  }
+
+
+
+  void getData () async{
+    data = await apiHandler.getUserData();
+    setState(() {
+
+    });
+  }
+
+
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
@@ -168,13 +193,15 @@ class _LoginAScreenState extends State<LoginAScreen> {
                                   _validatePhone(_phoneController.text) == false ){
                                 _validatePass(_passController.text);
                                 _validatePhone(_phoneController.text);
-                              } else {
+                              }  else {
+                                if(data[index].phoneNumber==_phoneController.text && data[index].password==_passController.text) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (
                                             context) => const PermissionA()),
                                   );
+                                }
                               }
                             },
                             style: ElevatedButton.styleFrom(
