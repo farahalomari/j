@@ -40,7 +40,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Location Screen'),),
+        
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
@@ -343,7 +343,7 @@ class MapAScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Map')),
+     
       body: const Center(child: Text('Map Screen')),
     );
   }

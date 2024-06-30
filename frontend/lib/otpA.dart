@@ -56,7 +56,7 @@ class _OTPAScreenState extends State<OTPAScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('OTP screen'),),
+      
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.cleaning_services),
         onPressed: () {

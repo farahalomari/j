@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'settingsA.dart';
-
-import 'locationA.dart';
-
-
-
+import 'package:location/location.dart' as loc;
+import 'package:gradproj7/settings.dart';
+import 'location.dart';
+import 'package:iamport_webview_flutter/iamport_webview_flutter.dart'; // Use the iamport_webview_flutter package
+import 'dart:io';
 
 class PermissionA extends StatefulWidget {
   const PermissionA({super.key});
@@ -16,99 +15,121 @@ class PermissionA extends StatefulWidget {
 
 class _PermissionAState extends State<PermissionA> {
   String? _currentAddress;
-  //Position? _currentPosition;
+  loc.LocationData? _currentPosition;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  final loc.Location location = loc.Location();
+
+  @override
+  void initState() {
+    super.initState();
+    _handleLocationPermission();
+    // Enable hybrid composition for Android
+    print('=========================================');
+    print('=======test==============================');
+    print('=========================================');
+
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return   SafeArea(
+    return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Permission'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
-        body: Column(children: [Expanded(
-        child: Container(
-        width: double.infinity,
-        alignment: Alignment.topLeft,
-        decoration: const BoxDecoration(
-        color: Color.fromARGB(255, 223, 218, 230),
-        borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30),
-        topRight: Radius.circular(30),
-        ),
-        ),
-        child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-        child: Column(
-        children:[
-          GestureDetector( onDoubleTap: () {
-            //_getCurrentPosition();
-          },
-            child:Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.location_searching,
-                    color: Colors.blue,
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                alignment: Alignment.topLeft,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 223, 218, 230),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
-                  hintText:'موقعك الحالي',
-                  hintStyle: TextStyle(color: Colors.black),
                 ),
-
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onDoubleTap: () {
+                            _handleLocationPermission();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                            ),
+                            child: const TextField(
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.location_searching,
+                                  color: Colors.blue,
+                                ),
+                                hintText: 'موقعك الحالي',
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.only(top: 15)),
+                        GestureDetector(
+                          onDoubleTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LocationScreen()));
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                            ),
+                            child: const TextField(
+                              style: TextStyle(color: Colors.black),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                prefixIcon: Icon(
+                                  Icons.location_on_sharp,
+                                  color: Colors.red,
+                                ),
+                                hintText: 'الى اين تريد الذهاب؟',
+                                hintStyle: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Padding(padding: EdgeInsets.all(20)),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Text('موقعك :${_currentAddress ?? ""}'),
+                        ),
+// Add the WebView here
+                        const SizedBox(
+                          height: 400, // Set a height for the WebView
+                          child: WebView(
+                            initialUrl:
+                                'assets/web/index.html', // Path to your HTML file
+                            javascriptMode: JavascriptMode.unrestricted,
+                          ),
+                        ),
+                      ],
+                      //Here should be the Map
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          const Padding(padding: EdgeInsets.only(top:15)),
-          GestureDetector( onDoubleTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(
-                    builder: (context) => const LocationAScreen()));
-          },
-            child:Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-              ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: Icon(
-                    Icons.location_on_sharp,
-                    color: Colors.red,
-                  ),
-                  hintText: 'الى اين تريد الذهاب؟',
-                  hintStyle: TextStyle(color: Colors.black),
-                ),
-
-              ),
-            ),
-          ),
-          const Padding(padding: EdgeInsets.all(20)),
-          Align(alignment: Alignment.topRight,
-            child:Text('موقعك :${_currentAddress ?? ""}'),
-          ),
-
-          //Here should be the Map
-
-        ],
+          ],
         ),
-    ),
-        ),
-        ),
-        ),
-        ],
-    ),
-
-
         bottomNavigationBar: NavigationBar(
           labelBehavior: labelBehavior,
           selectedIndex: currentPageIndex,
@@ -135,7 +156,7 @@ class _PermissionAState extends State<PermissionA> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const LocationAScreen()));
+                        builder: (context) => const LocationScreen()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.route),
@@ -147,7 +168,7 @@ class _PermissionAState extends State<PermissionA> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsAScreen()));
+                        builder: (context) => const SettingsScreen()));
               },
               child: const NavigationDestination(
                 icon: Icon(Icons.person),
@@ -160,57 +181,67 @@ class _PermissionAState extends State<PermissionA> {
     );
   }
 
-  Future<bool> _handleLocationPermission() async {
+  Future<void> _handleLocationPermission() async {
     bool serviceEnabled;
-    //LocationPermission permission;
+    loc.PermissionStatus permissionGranted;
 
-    //serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    // if (!serviceEnabled) {
-    //   _showSnackBar(
-    //       'Location services are disabled. Please enable the services');
-    //   return false;
-    // }
-    // permission = await Geolocator.checkPermission();
-    // if (permission == LocationPermission.denied) {
-    //   permission = await Geolocator.requestPermission();
-    //   if (permission == LocationPermission.denied) {
-    //     _showSnackBar('Location permissions are denied');
-    //     return false;
-    //   }
-    // }
-    // if (permission == LocationPermission.deniedForever) {
-    //   _showSnackBar(
-    //       'Location permissions are permanently denied, we cannot request permissions.');
-    //   return false;
-    // }
-    return true;
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        _showSnackBar(
+            'Location services are disabled. Please enable the services');
+        return;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == loc.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != loc.PermissionStatus.granted) {
+        _showSnackBar('Location permissions are denied');
+        return;
+      }
+    }
+
+    if (permissionGranted == loc.PermissionStatus.deniedForever) {
+      _showSnackBar(
+          'Location permissions are permanently denied, we cannot request permissions.');
+      return;
+    }
+
+    _getCurrentPosition();
   }
-  //
-  // Future<void> _getCurrentPosition() async {
-  //   final hasPermission = await _handleLocationPermission();
-  //   if (!hasPermission) return;
-  //   _currentPosition = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-  //   _getAddressFromLatLng(_currentPosition!);
-  // }
 
-  // Future<void> _getAddressFromLatLng(var position) async {
-  //   try {
-  //     List<Placemark> placemarks = await placemarkFromCoordinates(
-  //         //_currentPosition!.latitude, _currentPosition!.longitude);
-  //     Placemark place = placemarks[0];
-  //     setState(() {
-  //       _currentAddress = "${place.locality},${place.country},${place.street}";
-  //     });
-  //   } catch (e) {
-  //     //print(e);
-  //   }
-  // }
+  Future<void> _getCurrentPosition() async {
+    try {
+      _currentPosition = await location.getLocation();
+      _getAddressFromLatLng();
+    } catch (e) {
+      _showSnackBar('Error: $e');
+    }
+  }
+
+  Future<void> _getAddressFromLatLng() async {
+    if (_currentPosition != null) {
+      try {
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            _currentPosition!.latitude!, _currentPosition!.longitude!);
+        Placemark place = placemarks[0];
+        String address = "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
+        setState(() {
+          _currentAddress = address;
+        });
+      } catch (e) {
+        _showSnackBar('Error: $e');
+      }
+    }
+  }
 
   void _showSnackBar(String message) {
     if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
   }
 }

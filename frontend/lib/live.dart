@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'package:geocoding/geocoding.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:location/location.dart' as loc;
 import 'package:gradproj7/settings.dart';
 import 'location.dart';
@@ -37,9 +37,6 @@ class _PermissionState extends State<Permission> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Permission'),
-        ),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
@@ -228,10 +225,11 @@ class _PermissionState extends State<Permission> {
   Future<void> _getAddressFromLatLng() async {
     if (_currentPosition != null) {
       try {
-        // Use a geocoding API to get the address from coordinates
-        // This is a placeholder and should be replaced with actual geocoding code
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+            _currentPosition!.latitude!, _currentPosition!.longitude!);
+        Placemark place = placemarks[0];
         String address =
-            "Lat: ${_currentPosition!.latitude}, Lon: ${_currentPosition!.longitude}";
+            "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
         setState(() {
           _currentAddress = address;
         });

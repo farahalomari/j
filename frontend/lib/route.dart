@@ -52,7 +52,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Map screen'),),
+        
         backgroundColor: Colors.white,
         body: FlutterMap(
           options: MapOptions(

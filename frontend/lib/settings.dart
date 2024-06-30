@@ -85,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Settings screen'),),
+        
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
