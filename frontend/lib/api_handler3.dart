@@ -3,7 +3,7 @@ import 'models/model3.dart';
 import 'package:http/http.dart' as http;
 
 class ApiHandler2{
-  final String baseUri="https://localhost:5432/api/Card";
+  final String baseUri="https://localhost:7128/api/Card";
 
   Future<List<Card>> getCard() async {
     List <Card> data = [];
