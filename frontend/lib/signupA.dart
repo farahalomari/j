@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:postgres/postgres.dart';
-
 import 'loginA.dart';
 import 'otpA.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'settingsA.dart';
 
 import 'locationA.dart';
@@ -21,12 +22,45 @@ class _PermissionAState extends State<PermissionA> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  TextEditingController myLocationController = TextEditingController();
+  GoogleMapController? mapController;
+  Set<Marker> markers = {};
+  final TextEditingController _destinationController = TextEditingController();
+  Position ? _output;
+
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    setState(() {
+      markers.add( Marker(
+        markerId: const MarkerId('Destination'),
+        position: LatLng(_output!.latitude, _output!.longitude),
+      ));
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentPosition();
+    locationFromAddress(_destinationController.text)
+        .then((locations) {
+      var error = 'No results found.';
+      Position ? output;
+      if (locations.isNotEmpty) {
+        output = locations[0] as Position;
+      }
+      setState(() {
+        _output = output;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return   SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Permission'),),
+        //appBar: AppBar(title: const Text('Permission'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(children: [Expanded(
         child: Container(
@@ -52,9 +86,10 @@ class _PermissionAState extends State<PermissionA> {
                 borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
               ),
-              child: const TextField(
-                style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+              child:  TextField(
+                controller: myLocationController,
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.location_searching,
@@ -93,13 +128,28 @@ class _PermissionAState extends State<PermissionA> {
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.all(20)),
-          Align(alignment: Alignment.topRight,
-            child:Text('موقعك :${_currentAddress ?? ""}'),
+
+          const Padding(padding: EdgeInsets.all(10)),
+
+          SizedBox(
+            height: 600,
+            width: 600,
+            child: GoogleMap(
+              initialCameraPosition:  CameraPosition(
+                target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+                zoom: 14.6,
+              ),
+              myLocationEnabled: true,
+              zoomGesturesEnabled: true,
+              onMapCreated: (controller) {},
+              onCameraMove: (position) {},
+              markers:markers,
+
+
+            ),
+
+
           ),
-
-          //Here should be the Map
-
         ],
         ),
     ),
@@ -202,6 +252,8 @@ class _PermissionAState extends State<PermissionA> {
       Placemark place = placemarks[0];
       setState(() {
         _currentAddress = "${place.locality},${place.country},${place.street}";
+        myLocationController.text = _currentAddress!;
+
       });
     } catch (e) {
       //print(e);

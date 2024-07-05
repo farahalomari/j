@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'settingsA.dart';
 import 'liveA.dart';
 import 'locationA.dart';
-
-
-
-
 
 class DestinationA extends StatefulWidget {
   const DestinationA({super.key});
@@ -18,24 +15,39 @@ class DestinationA extends StatefulWidget {
 
 class _DestinationAState extends State<DestinationA> {
   final TextEditingController _destinationController = TextEditingController();
-  String ? _output;
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  TextEditingController myLocationController = TextEditingController();
+  GoogleMapController? mapController;
+  Set<Marker> markers = {};
+  Position ? _output;
 
 
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    setState(() {
+      markers.add( Marker(
+        markerId: const MarkerId('Destination'),
+        position: LatLng(_output!.latitude, _output!.longitude),
+      ));
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+
     _getCurrentPosition();
+
     locationFromAddress(_destinationController.text)
         .then((locations) {
-      var output = 'No results found.';
+      var error = 'No results found.';
+      Position ? output;
       if (locations.isNotEmpty) {
-        output = locations[0].toString();
+        output = locations[0] as Position;
       }
       setState(() {
         _output = output;
@@ -53,15 +65,16 @@ class _DestinationAState extends State<DestinationA> {
   Widget build(BuildContext context) {
     return   SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Destination'),),
+        //appBar: AppBar(title: const Text('Destination'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(children: [
+          const Padding(padding: EdgeInsets.only(top:5,bottom:20)),
           GestureDetector( onDoubleTap: () {
             _getCurrentPosition();
           },
             child:Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
+                borderRadius: BorderRadius.circular(12),
                 color: Colors.white,
               ),
               child:  TextField(
@@ -83,7 +96,7 @@ class _DestinationAState extends State<DestinationA> {
           const Padding(padding: EdgeInsets.only(top:5)),
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
+              borderRadius: BorderRadius.circular(12),
               color: Colors.white,
             ),
             child:  TextField(
@@ -102,9 +115,28 @@ class _DestinationAState extends State<DestinationA> {
             ),
           ),
 
-          //Here should be the Map
+          const Padding(padding: EdgeInsets.all(10)),
 
-          const Padding(padding: EdgeInsets.all(290)),
+          SizedBox(
+            height: 500,
+            width: 500,
+            child: GoogleMap(
+              initialCameraPosition:  CameraPosition(
+                target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+                zoom: 14.6,
+              ),
+              myLocationEnabled: true,
+              zoomGesturesEnabled: true,
+              onMapCreated: (controller) {},
+              onCameraMove: (position) {},
+              markers:markers,
+
+            ),
+
+
+          ),
+
+          const Padding(padding: EdgeInsets.all(10)),
           Align(  alignment: Alignment.bottomCenter,
             child:ElevatedButton(
               onPressed: () {

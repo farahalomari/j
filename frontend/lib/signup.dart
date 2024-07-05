@@ -164,7 +164,7 @@ bool _validateConfirm(String value1, String value2) {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Signup screen'),),
+        //appBar: AppBar(title: const Text('Signup screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

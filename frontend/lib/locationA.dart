@@ -29,6 +29,16 @@ class _LocationAScreenState extends State<LocationAScreen> {
   void initState() {
     super.initState();
     _getCurrentPosition();
+    locationFromAddress(_destinationController.text)
+        .then((locations) {
+      var output = 'No results found.';
+      if (locations.isNotEmpty) {
+        output = locations[0].toString();
+      }
+      setState(() {
+        _output = output;
+      });
+    });
 
   }
 
@@ -41,7 +51,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Location Screen'),),
+        //appBar: AppBar(title: const Text('Location Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [

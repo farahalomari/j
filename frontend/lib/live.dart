@@ -1,11 +1,10 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:gradproj7/settings.dart';
 import 'location.dart';
-//import 'package:webview_flutter/webview_flutter.dart'; // Import WebView
-import 'package:iamport_webview_flutter/iamport_webview_flutter.dart'; // Use the iamport_webview_flutter package
-import 'dart:io';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 
@@ -20,22 +19,47 @@ class _PermissionState extends State<Permission> {
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
-  NavigationDestinationLabelBehavior labelBehavior =
-      NavigationDestinationLabelBehavior.alwaysShow;
+  NavigationDestinationLabelBehavior labelBehavior = NavigationDestinationLabelBehavior.alwaysShow;
+  TextEditingController myLocationController = TextEditingController();
+  GoogleMapController? mapController;
+  Set<Marker> markers = {};
+  final TextEditingController _destinationController = TextEditingController();
+  Position ? _output;
+
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    setState(() {
+      markers.add( Marker(
+        markerId: const MarkerId('Destination'),
+        position: LatLng(_output!.latitude, _output!.longitude),
+      ));
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // Enable hybrid composition for Android
-
-    //if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    _getCurrentPosition();
+    locationFromAddress(_destinationController.text)
+        .then((locations) {
+      var error = 'No results found.';
+      Position ? output;
+      if (locations.isNotEmpty) {
+        output = locations[0] as Position;
+      }
+      setState(() {
+        _output = output;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: const Text('Permission'),),
+        //appBar: AppBar(title: const Text('Permission'),),
+
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
           children: [
@@ -64,9 +88,10 @@ class _PermissionState extends State<Permission> {
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.white,
                             ),
-                            child: const TextField(
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                            child:  TextField(
+                              controller: myLocationController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.location_searching,
@@ -92,9 +117,10 @@ class _PermissionState extends State<Permission> {
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.white,
                             ),
-                            child: const TextField(
-                              style: TextStyle(color: Colors.black),
-                              decoration: InputDecoration(
+                            child:  TextField(
+                              controller: _destinationController,
+                              style: const TextStyle(color: Colors.black),
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.location_on_sharp,
@@ -106,22 +132,29 @@ class _PermissionState extends State<Permission> {
                             ),
                           ),
                         ),
-                        const Padding(padding: EdgeInsets.all(20)),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('ADDRESS: ${_currentAddress ?? ""}'),
-                        ),
-                        // Add the WebView here
-                        const SizedBox(
-                          height: 400, // Set a height for the WebView
-                          child: WebView(
-                            initialUrl:
-                                'assets/web/index.html', // Path to your HTML file
-                            javascriptMode: JavascriptMode.unrestricted,
+                        const Padding(padding: EdgeInsets.all(10)),
+
+                        SizedBox(
+                          height: 600,
+                          width: 600,
+                          child: GoogleMap(
+                            initialCameraPosition:  CameraPosition(
+                              target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+                              zoom: 14.6,
+                            ),
+                            myLocationEnabled: true,
+                            zoomGesturesEnabled: true,
+                            onMapCreated: (controller) {},
+                            onCameraMove: (position) {},
+                            markers:markers,
+
+
                           ),
+
+
                         ),
+
                       ],
-                      //Here should be the Map
                     ),
                   ),
                 ),
@@ -211,6 +244,8 @@ class _PermissionState extends State<Permission> {
     if (!hasPermission) return;
     _currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    log(_currentPosition!.latitude.toString());
+    log(_currentPosition!.longitude.toString());
     _getAddressFromLatLng(_currentPosition!);
   }
 
@@ -221,6 +256,8 @@ class _PermissionState extends State<Permission> {
       Placemark place = placemarks[0];
       setState(() {
         _currentAddress = "${place.locality},${place.country},${place.street}";
+        myLocationController.text = _currentAddress!;
+
       });
     } catch (e) {
       //print(e);

@@ -55,6 +55,7 @@ dependencies:
   meta: ^1.1.0
   collection: ^1.14.0
   iamport_webview_flutter: ^3.0.7
+  firebase_core: ^3.1.1
 
 
 
