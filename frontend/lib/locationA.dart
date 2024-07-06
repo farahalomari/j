@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'bus_routes.dart';
 import 'settingsA.dart';
 import 'destinationA.dart';
 import 'liveA.dart';
@@ -29,16 +30,6 @@ class _LocationAScreenState extends State<LocationAScreen> {
   void initState() {
     super.initState();
     _getCurrentPosition();
-    locationFromAddress(_destinationController.text)
-        .then((locations) {
-      var output = 'No results found.';
-      if (locations.isNotEmpty) {
-        output = locations[0].toString();
-      }
-      setState(() {
-        _output = output;
-      });
-    });
 
   }
 
@@ -203,11 +194,27 @@ class _LocationAScreenState extends State<LocationAScreen> {
                             ),
                           ),
                           const Padding(
-                            padding: EdgeInsets.only(top: 30),
+                            padding: EdgeInsets.only(top: 50),
                             child: Icon(
                               Icons.access_time_outlined,
                               color: Colors.black,
                               size: 30,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child:GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Bus()));
+                              },
+                              child: const Icon(
+                                Icons.alt_route_sharp,
+                                color: Colors.pink,
+                                size: 40,
+                              ),
                             ),
                           ),
 

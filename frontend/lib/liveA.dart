@@ -26,34 +26,15 @@ class _PermissionAState extends State<PermissionA> {
   GoogleMapController? mapController;
   Set<Marker> markers = {};
   final TextEditingController _destinationController = TextEditingController();
-  Position ? _output;
 
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    setState(() {
-      markers.add( Marker(
-        markerId: const MarkerId('Destination'),
-        position: LatLng(_output!.latitude, _output!.longitude),
-      ));
-    });
-  }
+
 
   @override
   void initState() {
     super.initState();
     _getCurrentPosition();
-    locationFromAddress(_destinationController.text)
-        .then((locations) {
-      var error = 'No results found.';
-      Position ? output;
-      if (locations.isNotEmpty) {
-        output = locations[0] as Position;
-      }
-      setState(() {
-        _output = output;
-      });
-    });
+
   }
 
   @override
@@ -132,9 +113,9 @@ class _PermissionAState extends State<PermissionA> {
           const Padding(padding: EdgeInsets.all(10)),
 
           SizedBox(
+            width:600,
             height: 600,
-            width: 600,
-            child: GoogleMap(
+            child:GoogleMap(
               initialCameraPosition:  CameraPosition(
                 target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
                 zoom: 14.6,
@@ -142,14 +123,13 @@ class _PermissionAState extends State<PermissionA> {
               myLocationEnabled: true,
               zoomGesturesEnabled: true,
               onMapCreated: (controller) {},
-              onCameraMove: (position) {},
-              markers:markers,
-
+              onCameraMove: (position) {_destinationController.text;},
 
             ),
-
-
           ),
+
+
+
         ],
         ),
     ),

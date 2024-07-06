@@ -22,36 +22,15 @@ class _PermissionState extends State<Permission> {
   NavigationDestinationLabelBehavior labelBehavior = NavigationDestinationLabelBehavior.alwaysShow;
   TextEditingController myLocationController = TextEditingController();
   GoogleMapController? mapController;
-  Set<Marker> markers = {};
   final TextEditingController _destinationController = TextEditingController();
-  Position ? _output;
 
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    setState(() {
-      markers.add( Marker(
-        markerId: const MarkerId('Destination'),
-        position: LatLng(_output!.latitude, _output!.longitude),
-      ));
-    });
-  }
 
   @override
   void initState() {
     super.initState();
     _getCurrentPosition();
-    locationFromAddress(_destinationController.text)
-        .then((locations) {
-      var error = 'No results found.';
-      Position ? output;
-      if (locations.isNotEmpty) {
-        output = locations[0] as Position;
-      }
-      setState(() {
-        _output = output;
-      });
-    });
+
   }
 
   @override
@@ -62,7 +41,9 @@ class _PermissionState extends State<Permission> {
 
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
         body: Column(
+
           children: [
+
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -79,11 +60,7 @@ class _PermissionState extends State<Permission> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        GestureDetector(
-                          onDoubleTap: () {
-                            _getCurrentPosition();
-                          },
-                          child: Container(
+                          Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               color: Colors.white,
@@ -102,7 +79,6 @@ class _PermissionState extends State<Permission> {
                               ),
                             ),
                           ),
-                        ),
                         const Padding(padding: EdgeInsets.only(top: 15)),
                         GestureDetector(
                           onDoubleTap: () {
@@ -133,26 +109,25 @@ class _PermissionState extends State<Permission> {
                           ),
                         ),
                         const Padding(padding: EdgeInsets.all(10)),
-
                         SizedBox(
+                          width:600,
                           height: 600,
-                          width: 600,
-                          child: GoogleMap(
-                            initialCameraPosition:  CameraPosition(
-                              target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-                              zoom: 14.6,
-                            ),
-                            myLocationEnabled: true,
-                            zoomGesturesEnabled: true,
-                            onMapCreated: (controller) {},
-                            onCameraMove: (position) {},
-                            markers:markers,
-
-
+                        child:GoogleMap(
+                          initialCameraPosition:  CameraPosition(
+                            target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+                            zoom: 14.6,
                           ),
-
+                          myLocationEnabled: true,
+                          zoomGesturesEnabled: true,
+                          onMapCreated: (controller) {},
+                          onCameraMove: (position) {_destinationController.text;},
 
                         ),
+                        ),
+
+
+
+
 
                       ],
                     ),

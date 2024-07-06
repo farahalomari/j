@@ -3,8 +3,7 @@ import 'package:gradproj7/live.dart';
 import 'package:gradproj7/location.dart';
 import 'package:gradproj7/cards.dart';
 import 'package:gradproj7/login.dart';
-import 'package:postgres/postgres.dart';
-
+import 'package:gradproj7/settingsA.dart';
 import 'api_handler.dart';
 import 'models/model.dart';
 
@@ -242,12 +241,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             },
                             child:const Text("Manage Cards",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
                           const Padding(padding: EdgeInsets.all(10),),
-                          const Text("Language",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),
+                    GestureDetector(
+                      onTap: () {
+                      showAlertDialog2(context);
+                      },
+                          child:const Text("Language",style: TextStyle(fontSize: 20,fontWeight:FontWeight.bold ),),),
+
                           const Padding(padding: EdgeInsets.all(10),),
                           GestureDetector(
                             onTap: () {
-                                  deleteUser(data[index].userID);
-                                },
+                                  //deleteUser(data[index].userID);
+                              showAlertDialog3(context);
+
+                            },
 
                             child: const Text("Delete user ",
                               style:
@@ -433,3 +439,71 @@ showAlertDialog(BuildContext context) {
   );
 }
 
+
+showAlertDialog2(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("No"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsScreen()));},
+  );
+  Widget continueButton = TextButton(
+    child: const Text("Yes"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsAScreen()));},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Changing language "),
+    content: const Text("Do you want to change the language to arabic ?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showAlertDialog3(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("No"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsScreen()));},
+  );
+  Widget continueButton = TextButton(
+    child: const Text("Yes"),
+    onPressed:  () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Deleting User "),
+    content: const Text("Are you sure you want to delete your account?"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

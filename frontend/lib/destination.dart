@@ -21,23 +21,13 @@ class _DestinationState extends State<Destination> {
   String? _currentAddress;
   Position? _currentPosition;
   int currentPageIndex = 0;
+  String ? _output;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
   TextEditingController myLocationController = TextEditingController();
   GoogleMapController? mapController;
-  Set<Marker> markers = {};
-  Position ? _output;
 
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    setState(() {
-      markers.add( Marker(
-        markerId: const MarkerId('Destination'),
-        position: LatLng(_output!.latitude, _output!.longitude),
-      ));
-    });
-  }
 
   @override
   void initState() {
@@ -45,15 +35,16 @@ class _DestinationState extends State<Destination> {
     _getCurrentPosition();
     locationFromAddress(_destinationController.text)
         .then((locations) {
-      var error = 'No results found.';
-      Position ? output;
+      var output = 'No results found.';
       if (locations.isNotEmpty) {
-        output = locations[0] as Position;
+        output = locations[0].toString();
       }
       setState(() {
         _output = output;
       });
     });
+
+
   }
 
   @override
@@ -129,8 +120,7 @@ class _DestinationState extends State<Destination> {
               myLocationEnabled: true,
               zoomGesturesEnabled: true,
               onMapCreated: (controller) {},
-              onCameraMove: (position) {},
-              markers:markers,
+              onCameraMove: (position) {_destinationController.text;},
 
 
             ),

@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:geocoding/geocoding.dart';
 
+import 'bus_routes.dart';
 import 'destination.dart';
 import 'live.dart';
 
@@ -30,16 +31,7 @@ class _LocationScreenState extends State<LocationScreen> {
   void initState() {
     super.initState();
     _getCurrentPosition();
-    locationFromAddress(_destinationController.text)
-        .then((locations) {
-      var output = 'No results found.';
-      if (locations.isNotEmpty) {
-        output = locations[0].toString();
-      }
-      setState(() {
-        _output = output;
-      });
-    });
+
 
   }
 
@@ -203,13 +195,21 @@ class _LocationScreenState extends State<LocationScreen> {
                               size: 30,
                             ),
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 50),
-                            child: Icon(
-                              Icons.access_time_outlined,
-                              color: Colors.black,
-                              size: 30,
+                           Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child:GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => const Bus()));
+                              },
+                            child: const Icon(
+                              Icons.alt_route_sharp,
+                              color: Colors.pink,
+                              size: 40,
                             ),
+                          ),
                           ),
                           GestureDetector(
                             onTap: () {

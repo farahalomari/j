@@ -254,7 +254,8 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
                           const Padding(padding: EdgeInsets.all(10),),
                           GestureDetector(
                             onTap: () {
-                              deleteUser(data[index].userID);
+                              showAlertDialog(context);
+                              //deleteUser(data[index].userID);
                             },
 
                             child: const Text("حذف الحساب ",
@@ -461,6 +462,39 @@ showAlertDialog2(BuildContext context) {
   AlertDialog alert = AlertDialog(
     title: const Text("تغير اللفة "),
     content: const Text("هل تريد تغير اللغة الى اللغة الانجليزية ؟"),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showAlertDialog3(BuildContext context) {
+
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: const Text("لا"),
+    onPressed:  () {Navigator.push(context,
+        MaterialPageRoute(
+            builder: (context) => const SettingsAScreen()));},
+  );
+  Widget continueButton = TextButton(
+    child: const Text("نعم"),
+    onPressed:  () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("حذف الحساب "),
+    content: const Text("هل تريد حذف الحساب؟"),
     actions: [
       cancelButton,
       continueButton,
