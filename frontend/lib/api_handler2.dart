@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class ApiHandler2{
   final String baseUri="https://localhost:7128/api/Routes";
 
-  Future<List<Route>> getRoute() async {
+  Future<List<Route>> GetRoute() async {
     List <Route> data = [];
 
     final uri = Uri.parse(baseUri);
@@ -26,7 +26,7 @@ class ApiHandler2{
     return data;
 
   }
-  Future<http.Response> postRoute({required Route route}) async{
+  Future<http.Response> PostRoute({required Route route}) async{
     final uri = Uri.parse(baseUri);
     late http.Response response;
     try{
@@ -43,7 +43,7 @@ class ApiHandler2{
   }
 
 
-  Future <http.Response> deleteRoute({required int routeID}) async{
+  Future <http.Response> DeleteRoute({required int routeID}) async{
     final uri = Uri.parse("$baseUri/$routeID");
     late http.Response response;
     try{
