@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'bus_routes.dart';
@@ -23,6 +24,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  var node = FocusNode();
 
 
 
@@ -44,7 +46,19 @@ class _LocationAScreenState extends State<LocationAScreen> {
       child: Scaffold(
         //appBar: AppBar(title: const Text('Location Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
-        body: Column(
+
+        body:
+    KeyboardListener(
+    focusNode: node,
+    onKeyEvent: (event) {
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+    Navigator.push(
+    context,
+    MaterialPageRoute(
+    builder: (context) => const DestinationA()));
+    }
+    },
+    child:Column(
           children: [
             Expanded(
               child: Container(
@@ -116,7 +130,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
                           const Text('الاماكن المحفوظة ',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 35,
+                                  fontSize: 20,
                                   color: Colors.purple)),
                           const Padding(
                             padding: EdgeInsets.only(top: 0,bottom:30),
@@ -174,7 +188,7 @@ class _LocationAScreenState extends State<LocationAScreen> {
                             child: Text('سابقا',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 35,
+                                    fontSize: 20,
                                     color: Colors.purple)),
                           ),
                           const Padding(
@@ -218,36 +232,15 @@ class _LocationAScreenState extends State<LocationAScreen> {
                             ),
                           ),
 
-                          GestureDetector(
-                            onTap: () {
-                              locationFromAddress(_destinationController.text)
-                                  .then((locations) {
-                                var output = 'No results found.';
-                                if (locations.isNotEmpty) {
-                                  output = locations[0].toString();
-                                }
-                                setState(() {
-                                  _output = output;
-                                });
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const DestinationA()));
-                            },
-                            child:   const Align(
-                                alignment: Alignment.bottomRight,
-                                child: Text('انتهاء',style: TextStyle(fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    color: Colors.purple),)
-                            ),
-                          ),
+
                         ],
                       )),
+                              ),
                 ),
               ),
+        ],
             ),
-          ],
+
         ),
         bottomNavigationBar: NavigationBar(
           labelBehavior: labelBehavior,

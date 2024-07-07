@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gradproj7/settings.dart';
 import 'package:geocoding/geocoding.dart';
@@ -24,6 +25,8 @@ class _LocationScreenState extends State<LocationScreen> {
   int currentPageIndex = 0;
   NavigationDestinationLabelBehavior labelBehavior =
       NavigationDestinationLabelBehavior.alwaysShow;
+  var node = FocusNode();
+
 
 
 
@@ -46,8 +49,21 @@ class _LocationScreenState extends State<LocationScreen> {
       child: Scaffold(
         //appBar: AppBar(title: const Text('Location Screen'),),
         backgroundColor: const Color.fromARGB(255, 223, 218, 230),
-        body: Column(
+        body:
+       KeyboardListener(
+         focusNode: node,
+         onKeyEvent: (event) {
+           if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.enter) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const Destination()));
+                      }
+          },
+        child:
+        Column(
           children: [
+
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -118,7 +134,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           const Text('Saved places',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 35,
+                                  fontSize: 20,
                                   color: Colors.purple)),
                           const Padding(
                             padding: EdgeInsets.only(top: 0,bottom:30),
@@ -176,7 +192,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             child: Text('Recent',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 35,
+                                    fontSize: 20,
                                     color: Colors.purple)),
                           ),
                           const Padding(
@@ -211,36 +227,15 @@ class _LocationScreenState extends State<LocationScreen> {
                             ),
                           ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              locationFromAddress(_destinationController.text)
-                                  .then((locations) {
-                                var output = 'No results found.';
-                                if (locations.isNotEmpty) {
-                                  output = locations[0].toString();
-                                }
-                                setState(() {
-                                  _output = output;
-                                });
-                              });
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const Destination()));
-                            },
-                            child:   const Align(
-                                alignment: Alignment.bottomRight,
-                                child: Text('Done',style: TextStyle(fontWeight: FontWeight.bold,
-                                    fontSize: 30,
-                                    color: Colors.purple),)
-                            ),
-                          ),
                         ],
-                      )),
+                      )
+                  ),
+    ),
                 ),
               ),
+        ],
             ),
-          ],
+
         ),
         bottomNavigationBar: NavigationBar(
           labelBehavior: labelBehavior,

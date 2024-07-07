@@ -119,7 +119,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             const TitleSection(name: 'Profile Settings',
             ),
-
             Expanded(
               child: Container(
                 width: double.infinity,
