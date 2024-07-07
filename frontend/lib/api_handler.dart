@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class ApiHandler{
   final String baseUri="https://localhost:7128/api/user";
 
-  Future<List<User>> getUserData() async {
+  Future<List<User>> Login() async {
     List <User> data = [];
 
     final uri = Uri.parse(baseUri);
@@ -26,7 +26,7 @@ class ApiHandler{
     return data;
 
   }
-  Future<http.Response> addUser({required User user}) async{
+  Future<http.Response> Register({required User user}) async{
     final uri = Uri.parse(baseUri);
     late http.Response response;
     try{
@@ -42,7 +42,7 @@ class ApiHandler{
     return response;
   }
 
-  Future<http.Response> forgetPass({required String phoneNumber}) async{
+  Future<http.Response> ForgetPassword({required String phoneNumber}) async{
     final uri = Uri.parse(baseUri);
     late http.Response response;
     try{
@@ -58,7 +58,7 @@ class ApiHandler{
     return response;
   }
 
-  Future <http.Response> deleteUser({required int userID}) async{
+  Future <http.Response> DeleteUser({required int userID}) async{
     final uri = Uri.parse("$baseUri/$userID");
     late http.Response response;
     try{
@@ -73,7 +73,7 @@ class ApiHandler{
     return response;
   }
 
-  Future<http.Response> changePass({required String phoneNumber}) async{
+  Future<http.Response> ChangePassword({required String phoneNumber}) async{
     final uri = Uri.parse(baseUri);
     late http.Response response;
     try{

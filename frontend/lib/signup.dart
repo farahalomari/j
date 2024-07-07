@@ -92,7 +92,7 @@ void addUser() async{
     phoneNumber: _phoneController.text,
     password: _passController.text,
   );
-  await apiHandler.addUser(user: user);
+  await apiHandler.Register(user: user);
 }
 
 

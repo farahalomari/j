@@ -29,11 +29,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void forgetPass(String phoneNumber) async{
 
-    await apiHandler.forgetPass(phoneNumber: phoneNumber);
+    await apiHandler.ForgetPassword(phoneNumber: phoneNumber);
   }
 
   void getData () async{
-    data = await apiHandler.getUserData();
+    data = await apiHandler.Login();
     setState(() {
 
     });

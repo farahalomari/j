@@ -38,12 +38,12 @@ class _SettingsAScreenState extends State<SettingsAScreen> {
       phoneNumber: _phoneController.text,
       password: _passController.text,
     );
-    await apiHandler.addUser(user: user);
+    await apiHandler.Register(user: user);
   }
 
   void deleteUser(int userID) async{
 
-    await apiHandler.deleteUser(userID: userID );
+    await apiHandler.DeleteUser(userID: userID );
     setState(() {
 
     });

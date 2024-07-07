@@ -37,7 +37,7 @@ class _LoginAScreenState extends State<LoginAScreen> {
 
 
   void getData () async{
-    data = await apiHandler.getUserData();
+    data = await apiHandler.Login();
     setState(() {
 
     });
