@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1075239459289",
+    "project_id": "tajwal-a1f68",
+    "storage_bucket": "tajwal-a1f68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075239459289:android:6be1e671348551b2aaa1c8",
+        "android_client_info": {
+          "package_name": "com.example.gradproj7"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRKqUeyODgncOtRRihX6VyJSozeXMZZlc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
